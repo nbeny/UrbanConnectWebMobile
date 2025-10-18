@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import urbanBackground from "@/assets/urbanconnectBackground.png";
-import { Building2 } from "lucide-react";
+import { Building2, Package, Wrench, Calendar, Phone, Mail, MapPin, Star, Users, Clock } from "lucide-react";
 
 export default function Home() {
   return (

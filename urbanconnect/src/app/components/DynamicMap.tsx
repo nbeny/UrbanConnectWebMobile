@@ -116,10 +116,10 @@ export default function DynamicMap() {
           attribution="&copy; OpenStreetMap contributors"
         />
 
-{users.map((user) => {
-  // Crée une icône personnalisée avec l’avatar du user
-  const userIcon = L.divIcon({
-    html: `
+        {users.map((user) => {
+          // Crée une icône personnalisée avec l’avatar du user
+          const userIcon = L.divIcon({
+            html: `
       <div style="
         width: 48px;
         height: 48px;
@@ -140,79 +140,79 @@ export default function DynamicMap() {
         />
       </div>
     `,
-    className: "", // pour ne pas appliquer les styles par défaut de Leaflet
-    iconSize: [48, 48],
-    iconAnchor: [24, 48],
-    popupAnchor: [0, -48],
-  });
+            className: "", // pour ne pas appliquer les styles par défaut de Leaflet
+            iconSize: [48, 48],
+            iconAnchor: [24, 48],
+            popupAnchor: [0, -48],
+          });
 
-  return (
-    <Marker key={user.id} position={user.position as any} icon={userIcon}>
-<Popup className="p-0 m-0 custom-popup">
-  <div className="relative w-64 p-4 rounded-3xl border border-white/20 bg-white/10 backdrop-blur-lg shadow-lg text-black transition-all duration-300">
-    
-    {/* Bouton de fermeture */}
-    <button
-      onClick={(e) => {
-        e.stopPropagation();
-        const popup = (e.currentTarget.closest('.leaflet-popup') as any)?._leaflet_id;
-        const map = (window as any).leafletMapInstance;
-        if (map && popup) {
-          const layer = Object.values(map._layers).find((l: any) => l._popup?._leaflet_id === popup);
-          if (layer && layer.closePopup) layer.closePopup();
-        }
-      }}
-      className="absolute top-2 right-2 bg-white/40 hover:bg-white/60 text-black rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold shadow-sm backdrop-blur-sm transition-all duration-200"
-    >
-      ✕
-    </button>
+          return (
+            <Marker key={user.id} position={user.position as any} icon={userIcon}>
+              <Popup className="p-0 m-0 custom-popup">
+                <div className="relative w-64 p-4 rounded-3xl border border-white/20 bg-white/10 backdrop-blur-lg shadow-lg text-black transition-all duration-300">
 
-    {/* En-tête : avatar + nom */}
-    <div className="flex items-center mb-3 mt-2">
-      <img
-        src={
-          user.avatar ||
-          `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.username}`
-        }
-        className="w-12 h-12 rounded-2xl mr-3 object-cover border border-white/20"
-        alt={`${user.firstName} ${user.lastName}`}
-      />
-      <div>
-        <h4 className="font-semibold text-black">
-          {user.firstName} {user.lastName}
-        </h4>
-        <p className="text-sm text-black/60">@{user.username}</p>
-      </div>
-    </div>
+                  {/* Bouton de fermeture */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const popup = (e.currentTarget.closest('.leaflet-popup') as any)?._leaflet_id;
+                      const map = (window as any).leafletMapInstance;
+                      if (map && popup) {
+                        const layer = Object.values(map._layers).find((l: any) => l._popup?._leaflet_id === popup);
+                        if (layer && layer.closePopup) layer.closePopup();
+                      }
+                    }}
+                    className="absolute top-2 right-2 bg-white/40 hover:bg-white/60 text-black rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold shadow-sm backdrop-blur-sm transition-all duration-200"
+                  >
+                    ✕
+                  </button>
 
-    {/* Carrousel */}
-    {user.photos && user.photos.length > 0 && (
-      <ImageCarousel images={user.photos} />
-    )}
+                  {/* En-tête : avatar + nom */}
+                  <div className="flex items-center mb-3 mt-2">
+                    <img
+                      src={
+                        user.avatar ||
+                        `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.username}`
+                      }
+                      className="w-12 h-12 rounded-2xl mr-3 object-cover border border-white/20"
+                      alt={`${user.firstName} ${user.lastName}`}
+                    />
+                    <div>
+                      <h4 className="font-semibold text-black">
+                        {user.firstName} {user.lastName}
+                      </h4>
+                      <p className="text-sm text-black/60">@{user.username}</p>
+                    </div>
+                  </div>
 
-    {/* Statistiques */}
-    <p className="text-xs text-black/70 mb-3">
-      📍 {user.locationCount} lieux • 💬 {user.messageCount} messages
-    </p>
+                  {/* Carrousel */}
+                  {user.photos && user.photos.length > 0 && (
+                    <ImageCarousel images={user.photos} />
+                  )}
 
-    {/* Boutons d’action */}
-    <div className="flex space-x-2">
-      <button className="flex-1 bg-white/20 hover:bg-white/30 text-black py-2 rounded-2xl text-sm font-medium transition duration-300 flex items-center justify-center border border-white/20">
-        <Heart className="w-4 h-4 mr-2" /> Liker
-      </button>
-      <button
-        onClick={() => window.open(`/messages?user=${user.id}`, "_blank")}
-        className="flex-1 bg-white/20 hover:bg-white/30 text-black py-2 rounded-2xl text-sm font-medium transition duration-300 flex items-center justify-center border border-white/20"
-      >
-        💬 Message
-      </button>
-    </div>
-  </div>
-</Popup>
+                  {/* Statistiques */}
+                  <p className="text-xs text-black/70 mb-3">
+                    📍 {user.locationCount} lieux • 💬 {user.messageCount} messages
+                  </p>
 
-    </Marker>
-  );
-})}
+                  {/* Boutons d’action */}
+                  <div className="flex space-x-2">
+                    <button className="flex-1 bg-white/20 hover:bg-white/30 text-black py-2 rounded-2xl text-sm font-medium transition duration-300 flex items-center justify-center border border-white/20">
+                      <Heart className="w-4 h-4 mr-2" /> Liker
+                    </button>
+                    <button
+                      onClick={() => window.open(`/messages?user=${user.id}`, "_blank")}
+                      className="flex-1 bg-white/20 hover:bg-white/30 text-black py-2 rounded-2xl text-sm font-medium transition duration-300 flex items-center justify-center border border-white/20"
+                    >
+                      💬 Message
+                    </button>
+                  </div>
+                </div>
+              </Popup>
+
+            </Marker>
+          );
+        })}
 
       </MapContainer>
     </div>
