@@ -7,6 +7,8 @@ import { NextPage } from "next";
 import { FaUserFriends, FaComment, FaShare, FaThumbsUp, FaPlus, FaChevronLeft, FaChevronRight, FaSave, FaTimes, FaEye, FaEyeSlash, FaEdit, FaTrash } from "react-icons/fa";
 import { Package, Wrench, Calendar, Phone, Mail, MapPin, Star, Users, Clock, Building2, Award, Trophy, Medal, Target, Shield, Zap, Map, Camera, Upload } from "lucide-react";
 import urbanBackground from "@/assets/urbanconnectBackground.png";
+import BottomBarMobileUrbanConnect from "@/app/components/BottomBar/MobileUrbanConnect";
+import TopBarTranspartUrbanConnect from "@/app/components/Topbar/TranspartUrbanConnect";
 
 // Styles pour masquer la scrollbar
 const scrollbarHideStyles = `
@@ -408,10 +410,13 @@ const ProfileEdit: NextPage = () => {
 
   return (
     <>
+      {/* Top Bar */}
+      <TopBarTranspartUrbanConnect />
+
       {/* Injection des styles CSS */}
       <style jsx global>{scrollbarHideStyles}</style>
 
-      <div className="relative w-screen h-screen overflow-hidden">
+      <div className="relative w-screen h-screen overflow-hidden mt-30">
         {/* Background */}
         <div className="absolute inset-0 opacity-10">
           <Image
@@ -441,8 +446,8 @@ const ProfileEdit: NextPage = () => {
               <button
                 onClick={handleSave}
                 className={`px-4 py-2 rounded-xl transition-colors flex items-center gap-2 ${hasChanges
-                    ? "bg-blue-600 text-white hover:bg-blue-700"
-                    : "bg-gray-200 text-gray-500 cursor-not-allowed"
+                  ? "bg-blue-600 text-white hover:bg-blue-700"
+                  : "bg-gray-200 text-gray-500 cursor-not-allowed"
                   }`}
                 disabled={!hasChanges}
               >
@@ -540,8 +545,8 @@ const ProfileEdit: NextPage = () => {
                         key={item.id}
                         onClick={() => setActiveTab(item.id)}
                         className={`px-4 py-2 font-['Manrope:Medium',_sans-serif] text-sm transition-colors text-center rounded-lg flex items-center gap-2 ${activeTab === item.id
-                            ? "text-[#4a90e2] bg-white/60 shadow-sm"
-                            : "text-[#333333] hover:text-[#4a90e2] hover:bg-white/30"
+                          ? "text-[#4a90e2] bg-white/60 shadow-sm"
+                          : "text-[#333333] hover:text-[#4a90e2] hover:bg-white/30"
                           }`}
                       >
                         <Icon className="w-4 h-4" />
@@ -1183,8 +1188,8 @@ const ProfileEdit: NextPage = () => {
                     </div>
                   </div>
 
-                                    {/* Section Projets Réalisés */}
-                                    <div className="backdrop-blur-lg bg-white/30 p-6 rounded-xl border border-white/20">
+                  {/* Section Projets Réalisés */}
+                  <div className="backdrop-blur-lg bg-white/30 p-6 rounded-xl border border-white/20">
                     <h2 className="text-xl font-['Manrope:Bold',_sans-serif] text-[#333333] mb-4">
                       🏢 Projets Réalisés
                     </h2>
@@ -1720,6 +1725,9 @@ const ProfileEdit: NextPage = () => {
           </div>
         )}
       </div>
+
+      {/* Bottom Bar */}
+      <BottomBarMobileUrbanConnect />
     </>
   );
 };
