@@ -7,6 +7,7 @@ import { NextPage } from "next";
 import { FaUserFriends, FaComment, FaShare, FaThumbsUp, FaPlus, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { Package, Wrench, Calendar, Phone, Mail, MapPin, Star, Users, Clock, Building2, Award, Trophy, Medal, Target, Shield, Zap, Map } from "lucide-react";
 import urbanBackground from "@/assets/urbanconnectBackground.png";
+import { useTheme } from "@/hooks/useTheme";
 
 // Styles pour masquer la scrollbar
 const scrollbarHideStyles = `
@@ -149,6 +150,11 @@ const ProfileSlug: NextPage = () => {
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState("journal");
   const [activeContactMenu, setActiveContactMenu] = useState("contacts");
+  
+  // Find current profile based on slug
+  const slug = params?.slug as string;
+  const { currentTheme, getThemeStyles } = useTheme(slug);
+  const themeStyles = getThemeStyles();
 
   // Sample profiles data - reproducing the complete structure from original
   const profiles: User[] = [
@@ -773,8 +779,6 @@ const ProfileSlug: NextPage = () => {
     { id: "contacts", label: "Contacts" },
   ];
 
-  // Find current profile based on slug
-  const slug = params?.slug as string;
   const currentProfile = profiles.find(p => p.id === slug);
   
   // Get index of current profile
@@ -853,12 +857,13 @@ const ProfileSlug: NextPage = () => {
         
         <div 
           className="relative w-screen h-screen overflow-hidden"
+          style={themeStyles}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
           {/* Background */}
-          <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{ opacity: currentTheme.backgroundOpacity / 100 }}>
             <Image
               src={urbanBackground}
               alt="Urban Connect Background"
@@ -866,6 +871,23 @@ const ProfileSlug: NextPage = () => {
               className="object-cover object-center"
             />
           </div>
+          {/* Background overlay principal */}
+          <div 
+            className="absolute inset-0" 
+            style={{ 
+              background: currentTheme.backgroundOverlay !== 'transparent' 
+                ? currentTheme.backgroundOverlay 
+                : themeStyles.gradientOverlay
+            }}
+          />
+          
+          {/* Overlay coloré renforcé pour l'image */}
+          <div 
+            className="absolute inset-0 mix-blend-overlay" 
+            style={{ 
+              background: themeStyles.backgroundColorOverlay
+            }}
+          />
           
           {/* Content */}
           <div className="relative z-[1] h-full flex items-center justify-center">
@@ -919,19 +941,38 @@ const ProfileSlug: NextPage = () => {
       
       <div 
         className="relative w-screen h-screen overflow-hidden"
+        style={themeStyles}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
         {/* Background */}
-        <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0" style={{ opacity: currentTheme.backgroundOpacity / 100 }}>
           <Image
             src={urbanBackground}
             alt="Urban Connect Background"
             fill
             className="object-cover object-center"
+            style={{ filter: themeStyles.backgroundFilter }}
           />
         </div>
+        {/* Background overlay principal */}
+        <div 
+          className="absolute inset-0" 
+          style={{ 
+            background: currentTheme.backgroundOverlay !== 'transparent' 
+              ? currentTheme.backgroundOverlay 
+              : themeStyles.gradientOverlay
+          }}
+        />
+        
+        {/* Overlay coloré renforcé pour l'image */}
+        <div 
+          className="absolute inset-0 mix-blend-overlay" 
+          style={{ 
+            background: themeStyles.backgroundColorOverlay
+          }}
+        />
         
         {/* Content with scroll */}
         <div className="relative z-[1] h-full overflow-y-auto p-4 md:p-6">
@@ -953,29 +994,35 @@ const ProfileSlug: NextPage = () => {
                 />
               </div>
               <div className="flex-1 text-center md:text-left">
-                <h1 className="text-3xl font-['Manrope:Bold',_sans-serif] text-[#333333]">{currentProfile.name}</h1>
-                <p className="font-['Manrope:Regular',_sans-serif] text-[#999999]">{currentProfile.bio}</p>
+                <h1 
+                  className="text-3xl font-['Manrope:Bold',_sans-serif]"
+                  style={{ color: '#1f2937' }} // Toujours noir
+                >{currentProfile.name}</h1>
+                <p 
+                  className="font-['Manrope:Regular',_sans-serif]"
+                  style={{ color: '#6b7280' }} // Toujours gris
+                >{currentProfile.bio}</p>
               </div>
             </div>
 
             {/* Stories and Recent Activities Layout */}
             <div className="mt-6 flex flex-col md:flex-row gap-4">
               {/* Stories */}
-              <div className="flex-1 backdrop-blur-lg bg-white/30 p-4 rounded-xl border border-white/20">
+              <div className={`flex-1 p-4 rounded-xl ${themeStyles.cardClass}`}>
                 <div className="overflow-x-auto flex space-x-4">
                   {currentProfile.stories.map((story) => (
                     <div key={story.id} className="flex flex-col items-center flex-shrink-0">
-                      <div className="w-16 md:w-20 h-16 md:h-20 rounded-full overflow-hidden border-2 border-blue-500">
+                      <div className="w-16 md:w-20 h-16 md:h-20 rounded-full overflow-hidden border-2" style={{ borderColor: currentTheme.accentColor }}>
                         <Image src={story.avatar} alt={story.name} width={80} height={80} className="object-cover" />
                       </div>
-                      <p className="text-xs md:text-sm mt-1 text-center">{story.name}</p>
+                      <p className={`text-xs md:text-sm mt-1 text-center ${themeStyles.textSecondary}`}>{story.name}</p>
                     </div>
                   ))}
                 </div>
               </div>
               
               {/* Recent Activities */}
-              <div className="md:w-80 backdrop-blur-lg bg-white/30 p-4 rounded-xl border border-white/20">
+              <div className={`md:w-80 p-4 rounded-xl ${themeStyles.cardClass}`}>
                 <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg p-4">
                   <h3 className="font-semibold text-sm mb-3 flex items-center text-purple-700">
                     <Target className="w-4 h-4 mr-2" />
@@ -1008,18 +1055,26 @@ const ProfileSlug: NextPage = () => {
             </div>
 
             {/* Menu navigation */}
-            <div className="mt-6 backdrop-blur-lg bg-white/30 p-3 md:p-4 rounded-xl border border-white/20">
-              <div className="border-b">
+            <div className={`mt-6 p-3 md:p-4 rounded-xl ${themeStyles.cardClass}`}>
+              <div className="border-b border-opacity-20" style={{ borderColor: currentTheme.primaryText }}>
                 <div className="grid grid-cols-5 gap-1 md:flex md:space-x-2 md:gap-0">
                   {menuItems.map((item) => (
                     <button
                       key={item.id}
                       onClick={() => setActiveTab(item.id)}
                       className={`px-2 md:px-6 py-2 md:py-3 font-['Manrope:Medium',_sans-serif] text-xs md:text-base transition-colors text-center ${
-                        activeTab === item.id
-                          ? "text-[#4a90e2] border-b-2 md:border-b-4 border-[#4a90e2] bg-white/30"
-                          : "text-[#333333] hover:text-[#4a90e2] hover:bg-white/20"
+                        activeTab === item.id ? 'shadow-sm' : 'hover:bg-gray-100/20'
                       }`}
+                      style={{
+                        color: activeTab === item.id 
+                          ? currentTheme.accentColor 
+                          : '#1f2937', // Toujours noir
+                        backgroundColor: activeTab === item.id 
+                          ? (currentTheme.isDark ? 'rgba(75, 85, 99, 0.4)' : 'rgba(255, 255, 255, 0.6)')
+                          : 'transparent',
+                        borderBottomColor: activeTab === item.id ? currentTheme.accentColor : 'transparent',
+                        borderBottomWidth: activeTab === item.id ? '2px' : '0px'
+                      }}
                     >
                       {item.label}
                     </button>

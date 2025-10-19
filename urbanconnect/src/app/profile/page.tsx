@@ -6,6 +6,7 @@ import Image from "next/image";
 import { FaUserFriends, FaComment, FaShare, FaThumbsUp } from "react-icons/fa";
 import { Package, Wrench, Calendar, Phone, Mail, MapPin, Star, Users, Clock, Building2, Award, Trophy, Medal, Target, Shield, Zap, Map } from "lucide-react";
 import urbanBackground from "@/assets/urbanconnectBackground.png";
+import { useTheme, TEXT_COLORS } from '@/hooks/useTheme';
 
 // Styles pour masquer la scrollbar
 const scrollbarHideStyles = `
@@ -21,6 +22,10 @@ const scrollbarHideStyles = `
 const Profile: React.FC = () => {
   const [activeTab, setActiveTab] = React.useState("journal");
   const [activeContactMenu, setActiveContactMenu] = React.useState("contacts");
+  
+  // Utiliser le thème global (pas de profileId spécifique pour cette page)
+  const { currentTheme, getThemeStyles } = useTheme();
+  const themeStyles = getThemeStyles();
 
   const user = {
     name: "John Doe",
@@ -397,16 +402,34 @@ const Profile: React.FC = () => {
       {/* Injection des styles CSS */}
       <style jsx global>{scrollbarHideStyles}</style>
       
-      <div className="relative w-screen h-screen overflow-hidden">
+      <div className="relative w-screen h-screen overflow-hidden" style={themeStyles}>
         {/* Background */}
-        <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0" style={{ opacity: currentTheme.backgroundOpacity / 100 }}>
           <Image
             src={urbanBackground}
             alt="Urban Connect Background"
             fill
             className="object-cover object-center"
+            style={{ filter: themeStyles.backgroundFilter }}
           />
         </div>
+        {/* Background overlay principal */}
+        <div 
+          className="absolute inset-0" 
+          style={{ 
+            background: currentTheme.backgroundOverlay !== 'transparent' 
+              ? currentTheme.backgroundOverlay 
+              : themeStyles.gradientOverlay
+          }}
+        />
+        
+        {/* Overlay coloré renforcé pour l'image */}
+        <div 
+          className="absolute inset-0 mix-blend-overlay" 
+          style={{ 
+            background: themeStyles.backgroundColorOverlay
+          }}
+        />
         
         {/* Content with scroll */}
         <div className="relative z-[1] h-full overflow-y-auto p-4 md:p-6">
@@ -428,29 +451,29 @@ const Profile: React.FC = () => {
             />
           </div>
           <div className="flex-1 text-center md:text-left">
-            <h1 className="text-3xl font-['Manrope:Bold',_sans-serif] text-[#333333]">{user.name}</h1>
-            <p className="font-['Manrope:Regular',_sans-serif] text-[#999999]">{user.bio}</p>
+            <h1 className={`text-3xl font-['Manrope:Bold',_sans-serif] ${themeStyles.textPrimary}`} style={themeStyles.textPrimaryStyle}>{user.name}</h1>
+            <p className={`font-['Manrope:Regular',_sans-serif] ${themeStyles.textSecondary}`} style={themeStyles.textSecondaryStyle}>{user.bio}</p>
           </div>
         </div>
 
         {/* Stories and Recent Activities Layout */}
         <div className="mt-6 flex flex-col md:flex-row gap-4">
           {/* Stories */}
-          <div className="flex-1 backdrop-blur-lg bg-white/30 p-4 rounded-xl border border-white/20">
+          <div className={`flex-1 p-4 rounded-xl ${themeStyles.cardClass}`}>
             <div className="overflow-x-auto flex space-x-4">
               {user.stories.map((story) => (
                 <div key={story.id} className="flex flex-col items-center flex-shrink-0">
-                  <div className="w-16 md:w-20 h-16 md:h-20 rounded-full overflow-hidden border-2 border-blue-500">
+                  <div className="w-16 md:w-20 h-16 md:h-20 rounded-full overflow-hidden border-2" style={{ borderColor: currentTheme.accentColor }}>
                     <Image src={story.avatar} alt={story.name} width={80} height={80} className="object-cover" />
                   </div>
-                  <p className="text-xs md:text-sm mt-1 text-center">{story.name}</p>
+                  <p className={`text-xs md:text-sm mt-1 text-center ${themeStyles.textSecondary}`}>{story.name}</p>
                 </div>
               ))}
             </div>
           </div>
           
           {/* Recent Activities */}
-          <div className="md:w-80 backdrop-blur-lg bg-white/30 p-4 rounded-xl border border-white/20">
+          <div className={`md:w-80 p-4 rounded-xl ${themeStyles.cardClass}`}>
             <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg p-4">
               <h3 className="font-semibold text-sm mb-3 flex items-center text-purple-700">
                 <Target className="w-4 h-4 mr-2" />
@@ -483,18 +506,26 @@ const Profile: React.FC = () => {
         </div>
 
         {/* Menu navigation */}
-        <div className="mt-6 backdrop-blur-lg bg-white/30 p-3 md:p-4 rounded-xl border border-white/20">
-          <div className="border-b">
+        <div className={`mt-6 p-3 md:p-4 rounded-xl ${themeStyles.cardClass}`}>
+          <div className="border-b border-opacity-20" style={{ borderColor: currentTheme.primaryText }}>
             <div className="grid grid-cols-5 gap-1 md:flex md:space-x-2 md:gap-0">
               {menuItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => setActiveTab(item.id)}
                   className={`px-2 md:px-6 py-2 md:py-3 font-['Manrope:Medium',_sans-serif] text-xs md:text-base transition-colors text-center ${
-                    activeTab === item.id
-                      ? "text-[#4a90e2] border-b-2 md:border-b-4 border-[#4a90e2] bg-white/30"
-                      : "text-[#333333] hover:text-[#4a90e2] hover:bg-white/20"
+                    activeTab === item.id ? 'shadow-sm' : 'hover:bg-gray-100/20'
                   }`}
+                  style={{
+                    color: activeTab === item.id 
+                      ? currentTheme.accentColor 
+                      : TEXT_COLORS.PRIMARY,
+                    backgroundColor: activeTab === item.id 
+                      ? (currentTheme.isDark ? 'rgba(75, 85, 99, 0.4)' : 'rgba(255, 255, 255, 0.6)')
+                      : 'transparent',
+                    borderBottomColor: activeTab === item.id ? currentTheme.accentColor : 'transparent',
+                    borderBottomWidth: activeTab === item.id ? '2px' : '0px'
+                  }}
                 >
                   {item.label}
                 </button>
@@ -511,7 +542,7 @@ const Profile: React.FC = () => {
               {/* Projets réalisés à gauche */}
               <div className="space-y-4">
                 <div className="backdrop-blur-lg bg-white/30 p-4 rounded-xl border border-white/20">
-                  <h3 className="text-xl font-['Manrope:Bold',_sans-serif] text-[#333333] mb-4 flex items-center">
+                    <h3 className={`text-xl font-['Manrope:Bold',_sans-serif] ${themeStyles.textPrimary} mb-4 flex items-center`} style={themeStyles.textPrimaryStyle}>
                     <Building2 className="mr-2 text-green-600" /> Projets Réalisés
                   </h3>
                   <div className="space-y-4">
@@ -546,7 +577,7 @@ const Profile: React.FC = () => {
               {/* Activités à droite */}
               <div className="space-y-4">
                 <div className="backdrop-blur-lg bg-white/30 p-4 rounded-xl border border-white/20">
-                  <h3 className="text-xl font-['Manrope:Bold',_sans-serif] text-[#333333] mb-4 flex items-center">
+                  <h3 className={`text-xl font-['Manrope:Bold',_sans-serif] ${themeStyles.textPrimary} mb-4 flex items-center`} style={themeStyles.textPrimaryStyle}>
                     <Calendar className="mr-2 text-purple-600" /> Mes Activités
                   </h3>
                   <div className="space-y-4">
@@ -642,7 +673,7 @@ const Profile: React.FC = () => {
                 
                 {/* Informations de Contact - en dessous du menu */}
                 <div className="backdrop-blur-lg bg-white/30 p-4 rounded-xl border border-white/20">
-                  <h3 className="text-xl font-['Manrope:Bold',_sans-serif] text-[#333333] mb-4 flex items-center">
+                  <h3 className={`text-xl font-['Manrope:Bold',_sans-serif] ${themeStyles.textPrimary} mb-4 flex items-center`} style={themeStyles.textPrimaryStyle}>
                     <Mail className="mr-2 text-indigo-600" /> Informations de Contact
                   </h3>
                   
@@ -681,7 +712,7 @@ const Profile: React.FC = () => {
               <div className="space-y-4">
                 {activeContactMenu === "contacts" && (
                   <div className="backdrop-blur-lg bg-white/30 p-4 rounded-xl border border-white/20">
-                    <h3 className="text-xl font-['Manrope:Bold',_sans-serif] text-[#333333] mb-4 flex items-center">
+                    <h3 className={`text-xl font-['Manrope:Bold',_sans-serif] ${themeStyles.textPrimary} mb-4 flex items-center`} style={themeStyles.textPrimaryStyle}>
                       <Users className="mr-2 text-blue-600" /> Mes Contacts
                     </h3>
                     
@@ -735,10 +766,22 @@ const Profile: React.FC = () => {
                     
                     {/* Actions */}
                     <div className="mt-4 flex gap-2">
-                      <button className="flex-1 py-2 bg-[#4a90e2] text-white rounded-xl hover:bg-[#3a7bc8] transition-colors text-sm font-['Manrope:Medium',_sans-serif]">
+                      <button 
+                        className="flex-1 py-2 rounded-xl transition-colors text-sm font-['Manrope:Medium',_sans-serif]"
+                        style={{
+                          backgroundColor: currentTheme.buttonPrimary,
+                          color: '#ffffff'
+                        }}
+                      >
                         Ajouter un contact
                       </button>
-                      <button className="flex-1 py-2 bg-white/30 text-[#333333] rounded-xl hover:bg-white/40 transition-colors text-sm font-['Manrope:Medium',_sans-serif]">
+                      <button 
+                        className="flex-1 py-2 rounded-xl transition-colors text-sm font-['Manrope:Medium',_sans-serif]"
+                        style={{
+                          backgroundColor: currentTheme.buttonSecondary,
+                          color: '#1f2937' // Toujours noir
+                        }}
+                      >
                         Rechercher
                       </button>
                     </div>
@@ -747,7 +790,7 @@ const Profile: React.FC = () => {
                 
                 {activeContactMenu === "blocked" && (
                   <div className="backdrop-blur-lg bg-white/30 p-4 rounded-xl border border-white/20">
-                    <h3 className="text-xl font-['Manrope:Bold',_sans-serif] text-[#333333] mb-4 flex items-center">
+                    <h3 className={`text-xl font-['Manrope:Bold',_sans-serif] ${themeStyles.textPrimary} mb-4 flex items-center`} style={themeStyles.textPrimaryStyle}>
                       <Shield className="mr-2 text-red-600" /> Contacts Bloqués
                     </h3>
                     
@@ -807,12 +850,12 @@ const Profile: React.FC = () => {
                   {/* Titre et contenu dynamique selon l'onglet actif */}
                   {activeTab === "journal" && (
                     <>
-                      <h2 className="font-['Manrope:Bold',_sans-serif] text-xl text-[#333333] mb-4 flex items-center">
+                      <h2 className={`font-['Manrope:Bold',_sans-serif] text-xl ${themeStyles.textPrimary} mb-4 flex items-center`} style={themeStyles.textPrimaryStyle}>
                         <Users className="mr-3 text-blue-600" /> À propos de moi
                       </h2>
                       {/* Bio/Description */}
                       <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border-l-4 border-blue-500">
-                        <p className="text-[#333333] leading-relaxed font-['Manrope:Regular',_sans-serif]">
+                        <p className={`${themeStyles.textPrimary} leading-relaxed font-['Manrope:Regular',_sans-serif]`} style={themeStyles.textPrimaryStyle}>
                           Développeur web passionné avec plus de 5 ans d'expérience dans la création d'applications modernes. 
                           Spécialisé en React, Node.js et technologies cloud. J'accompagne les entreprises et particuliers 
                           dans leur transformation digitale avec des solutions sur-mesure et innovantes.
@@ -1137,7 +1180,7 @@ const Profile: React.FC = () => {
                         <Image src={user.profilePhoto} alt={user.name} width={40} height={40} />
                       </div>
                       <div>
-                        <p className="font-['Manrope:Bold',_sans-serif] text-[#333333]">{user.name}</p>
+                        <p className={`font-['Manrope:Bold',_sans-serif] ${themeStyles.textPrimary}`} style={themeStyles.textPrimaryStyle}>{user.name}</p>
                         <p className="text-gray-500 text-sm">{post.date}</p>
                       </div>
                     </div>
@@ -1159,7 +1202,7 @@ const Profile: React.FC = () => {
                 {activeTab === "produits" && (
                   <div className="space-y-4">
                     <div className="backdrop-blur-lg bg-white/30 p-4 rounded-xl border border-white/20">
-                      <h3 className="text-xl font-['Manrope:Bold',_sans-serif] text-[#333333] mb-4 flex items-center">
+                      <h3 className={`text-xl font-['Manrope:Bold',_sans-serif] ${themeStyles.textPrimary} mb-4 flex items-center`} style={themeStyles.textPrimaryStyle}>
                         <Package className="mr-2 text-blue-600" /> Mes Produits
                       </h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1186,7 +1229,13 @@ const Profile: React.FC = () => {
                                   {product.location}
                                 </span>
                               </div>
-                              <button className="w-full mt-3 py-2 bg-[#4a90e2] text-white rounded-xl hover:bg-[#3a7bc8] transition-colors font-['Manrope:Medium',_sans-serif]">
+                              <button 
+                                className="w-full mt-3 py-2 rounded-xl transition-colors font-['Manrope:Medium',_sans-serif]"
+                                style={{
+                                  backgroundColor: currentTheme.buttonPrimary,
+                                  color: '#ffffff'
+                                }}
+                              >
                                 Voir les détails
                               </button>
                             </div>
@@ -1201,7 +1250,7 @@ const Profile: React.FC = () => {
                 {activeTab === "services" && (
                   <div className="space-y-4">
                     <div className="backdrop-blur-lg bg-white/30 p-4 rounded-xl border border-white/20">
-                      <h3 className="text-xl font-['Manrope:Bold',_sans-serif] text-[#333333] mb-4 flex items-center">
+                      <h3 className={`text-xl font-['Manrope:Bold',_sans-serif] ${themeStyles.textPrimary} mb-4 flex items-center`} style={themeStyles.textPrimaryStyle}>
                         <Wrench className="mr-2 text-green-600" /> Mes Services
                       </h3>
                       <div className="space-y-4">
@@ -1231,7 +1280,13 @@ const Profile: React.FC = () => {
                                   <span>{service.completedProjects} projets</span>
                                 </div>
                               </div>
-                              <button className="px-4 py-2 bg-[#4a90e2] text-white rounded-xl hover:bg-[#3a7bc8] transition-colors font-['Manrope:Medium',_sans-serif]">
+                              <button 
+                                className="px-4 py-2 rounded-xl transition-colors font-['Manrope:Medium',_sans-serif]"
+                                style={{
+                                  backgroundColor: currentTheme.buttonPrimary,
+                                  color: '#ffffff'
+                                }}
+                              >
                                 Contacter
                               </button>
                             </div>
@@ -1359,7 +1414,13 @@ const Profile: React.FC = () => {
                     </div>
 
                     {/* Contact Button */}
-                    <button className="w-full mt-4 py-3 bg-[#4a90e2] text-white rounded-xl hover:bg-[#3a7bc8] transition-colors font-['Manrope:Medium',_sans-serif]">
+                    <button 
+                      className="w-full mt-4 py-3 rounded-xl transition-colors font-['Manrope:Medium',_sans-serif]"
+                      style={{
+                        backgroundColor: currentTheme.buttonPrimary,
+                        color: '#ffffff'
+                      }}
+                    >
                       Contacter le vendeur
                     </button>
                   </div>
