@@ -961,7 +961,7 @@ const ProfileSlug: NextPage = () => {
             {/* Stories and Recent Activities Layout */}
             <div className="mt-6 flex flex-col md:flex-row gap-4">
               {/* Stories */}
-              <div className="flex-1 backdrop-blur-lg bg-white/30 p-4 rounded-xl border border-white/20">
+              <div className="flex-1 backdrop-blur-lg bg-white/30 p-4 rounded-xl border border-white/20 text-black">
                 <div className="overflow-x-auto flex space-x-4">
                   {currentProfile.stories.map((story) => (
                     <div key={story.id} className="flex flex-col items-center flex-shrink-0">
