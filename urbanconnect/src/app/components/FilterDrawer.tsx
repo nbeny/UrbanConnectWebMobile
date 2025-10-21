@@ -133,12 +133,13 @@ export default function FilterDrawer({
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/20 z-10 transition-opacity duration-300"
+        className="fixed inset-0 bg-black/20 z-40 transition-opacity duration-300"
         onClick={onClose}
+        style={{ bottom: 0, top: 0 }}
       />
 
       {/* Drawer */}
-      <div className="fixed right-0 top-0 h-full w-96 bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out">
+      <div className="fixed right-0 top-0 h-full w-96 bg-white shadow-xl z-[60] transform transition-transform duration-300 ease-in-out">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <div className="flex items-center gap-2">

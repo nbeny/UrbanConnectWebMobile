@@ -860,8 +860,7 @@ const ApplicationsCellRenderer = (params) => {
 };
 
 // Composant RequestsPanel
-const RequestsPanel = ({ itemsPerPage, currentPage, setCurrentPage }) => {
-  const totalPages = Math.ceil(mockRequestsData.length / itemsPerPage);
+const RequestsPanel = ({ itemsPerPage, currentPage, setCurrentPage, totalPages, totalItems }) => {
   const paginatedRequests = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     return mockRequestsData.slice(startIndex, startIndex + itemsPerPage);
@@ -870,14 +869,14 @@ const RequestsPanel = ({ itemsPerPage, currentPage, setCurrentPage }) => {
   return (
     <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
       {/* Header */}
-      <div className="px-4 py-3 border-b border-gray-200 bg-gray-50">
-        <h2 className="text-lg font-semibold text-gray-900">Demandes de services</h2>
-        <p className="text-sm text-gray-600">{mockRequestsData.length} demandes disponibles</p>
+      <div className="px-3 sm:px-4 py-2 sm:py-3 border-b border-gray-200 bg-gray-50">
+        <h2 className="text-base sm:text-lg font-semibold text-gray-900">Demandes de services</h2>
+        <p className="text-xs sm:text-sm text-gray-600">{totalItems} demandes disponibles</p>
       </div>
 
       {/* Requests Table */}
       <div className="overflow-hidden">
-        <div className="h-[800px] overflow-y-auto">
+        <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50 sticky top-0">
               <tr>
@@ -949,9 +948,36 @@ const RequestsPanel = ({ itemsPerPage, currentPage, setCurrentPage }) => {
             </tbody>
           </table>
         </div>
-        </div>
+
+        {/* Pagination pour les demandes */}
+        {totalPages > 1 && (
+          <div className="bg-white px-2 sm:px-4 py-2 sm:py-3 border-t border-gray-200">
+            <div className="flex items-center justify-center gap-2 sm:gap-4">
+              <button
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-2 sm:px-4 py-1 sm:py-2 border border-gray-300 rounded-lg text-xs sm:text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 transition-colors"
+              >
+                Précédent
+              </button>
+              <span className="text-xs sm:text-sm text-gray-700">
+                Page <span className="font-semibold">{currentPage}</span> / <span className="font-semibold">{totalPages}</span>
+                <span className="mx-1 sm:mx-2 text-gray-400 hidden sm:inline">•</span>
+                <span className="font-medium hidden sm:inline">{totalItems}</span>
+                <span className="hidden sm:inline"> résultats</span>
+              </span>
+              <button
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="px-2 sm:px-4 py-1 sm:py-2 border border-gray-300 rounded-lg text-xs sm:text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 transition-colors"
+              >
+                Suivant
+              </button>
+            </div>
+          </div>
+        )}
       </div>
-    
+    </div>
   );
 };
 
@@ -1151,80 +1177,74 @@ export default function InventoryListing() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen p-6 mt-20 mb-24">
+    <div className="bg-gray-50 min-h-screen p-4 sm:p-6 mt-20 mb-24">
       <div className="max-w-full mx-auto">
         {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Inventaire UrbanConnect</h1>
-          <p className="text-gray-600">Gérez vos produits, services, utilisateurs et offres d'emploi</p>
+        <div className="mb-4 sm:mb-6">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Inventaire UrbanConnect</h1>
+          <p className="text-sm sm:text-base text-gray-600">Gérez vos produits, services, utilisateurs et offres d'emploi</p>
         </div>
 
-        {/* Main Layout: Requests (1/3) + Inventory (2/3) */}
-        <div className="flex gap-6">
-          {/* Left Panel - Demandes de services (1/3 de l'écran) */}
-          <div className="w-1/3">
-            <RequestsPanel 
-              itemsPerPage={itemsPerPage} 
-              currentPage={currentPageRequests} 
-              setCurrentPage={setCurrentPageRequests} 
-            />
-          </div>
-
-          {/* Right Panel - Inventory (2/3 de l'ecran) */}
-          <div className="w-2/3">
+        {/* Main Layout: Responsive - Mobile/Tablet: stack vertical (inventory first), Desktop: side by side */}
+        <div className="flex flex-col xl:flex-row gap-4 sm:gap-6 pr-2">
+          {/* Inventory Panel - First on mobile/tablet, right on desktop (2/3) */}
+          <div className="w-full xl:w-2/3 order-1 xl:order-2 pr-2">
             <div className="space-y-6">
 
         {/* Search and Filters Bar */}
-        <div className="mb-6 space-y-4">
+        <div className="mb-4 sm:mb-6 space-y-4">
           {/* Search Bar */}
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
               <input
                 type="text"
-                placeholder="Rechercher par titre, description ou utilisateur..."
+                placeholder="Rechercher..."
                 value={searchText}
                 onChange={(e) => {
                   setSearchText(e.target.value);
                   setCurrentPageInventory(1);
                 }}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
             </div>
-            <button
-              onClick={() => setShowFilters(!showFilters)}
-              className={`flex items-center gap-2 px-4 py-3 rounded-lg border font-medium transition-colors ${
-                showFilters
-                  ? 'bg-indigo-600 text-white border-indigo-600'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-              }`}
-            >
-              <Filter className="w-4 h-4" />
-              Filtres rapides
-              {getActiveFiltersCount() > 0 && (
-                <span className={`${showFilters ? 'bg-white text-indigo-600' : 'bg-indigo-600 text-white'} rounded-full px-2 py-1 text-xs font-bold`}>
-                  {getActiveFiltersCount()}
-                </span>
-              )}
-            </button>
-            <button
-              onClick={() => setShowFilterDrawer(true)}
-              className="flex items-center gap-2 px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 font-medium transition-colors"
-            >
-              <Filter className="w-4 h-4" />
-              Tous les filtres
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 rounded-lg border font-medium transition-colors text-sm sm:text-base ${
+                  showFilters
+                    ? 'bg-indigo-600 text-white border-indigo-600'
+                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                }`}
+              >
+                <Filter className="w-4 h-4" />
+                <span className="hidden sm:inline">Filtres rapides</span>
+                <span className="sm:hidden">Filtres</span>
+                {getActiveFiltersCount() > 0 && (
+                  <span className={`${showFilters ? 'bg-white text-indigo-600' : 'bg-indigo-600 text-white'} rounded-full px-2 py-1 text-xs font-bold`}>
+                    {getActiveFiltersCount()}
+                  </span>
+                )}
+              </button>
+              <button
+                onClick={() => setShowFilterDrawer(true)}
+                className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 font-medium transition-colors text-sm sm:text-base"
+              >
+                <Filter className="w-4 h-4" />
+                <span className="hidden sm:inline">Tous les filtres</span>
+              </button>
+            </div>
           </div>
 
           {/* Advanced Filters */}
           {showFilters && (
-            <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div className="bg-white rounded-lg p-3 sm:p-4 border border-gray-200 shadow-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 sm:gap-4">
 
                 {/* Type Filter */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Type</label>
-                  <div className="space-y-2">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Type</label>
+                  <div className="space-y-1 sm:space-y-2">
                     {['Locations', 'Ventes', 'Services', 'Demandes'].map(type => (
                       <label key={type} className="flex items-center">
                         <input
@@ -1238,7 +1258,7 @@ export default function InventoryListing() {
                           }}
                           className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                         />
-                        <span className="ml-2 text-sm text-gray-600">{type}</span>
+                        <span className="ml-2 text-xs sm:text-sm text-gray-600">{type}</span>
                       </label>
                     ))}
                   </div>
@@ -1247,8 +1267,8 @@ export default function InventoryListing() {
 
                 {/* Category Filter */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Catégorie (###)</label>
-                  <div className="max-h-56 overflow-y-auto space-y-2">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Catégorie</label>
+                  <div className="max-h-40 sm:max-h-56 overflow-y-auto space-y-1 sm:space-y-2">
                     {Object.keys(urbanConnectCategories).map(mainType => (
                       Object.keys(urbanConnectCategories[mainType]).map(category => (
                         <label key={category} className="flex items-center">
@@ -1263,7 +1283,7 @@ export default function InventoryListing() {
                             }}
                             className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                           />
-                          <span className="ml-2 text-sm text-gray-600">{category}</span>
+                          <span className="ml-2 text-xs sm:text-sm text-gray-600">{category}</span>
                         </label>
                       ))
                     ))}
@@ -1272,8 +1292,8 @@ export default function InventoryListing() {
 
                 {/* Subcategory Filter */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Sous-catégorie (####)</label>
-                  <div className="max-h-56 overflow-y-auto space-y-2">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Sous-catégorie</label>
+                  <div className="max-h-40 sm:max-h-56 overflow-y-auto space-y-1 sm:space-y-2">
                     {Object.keys(urbanConnectCategories).map(mainType => (
                       Object.keys(urbanConnectCategories[mainType]).map(category => (
                         urbanConnectCategories[mainType][category].map(subcategory => (
@@ -1299,19 +1319,19 @@ export default function InventoryListing() {
 
                 {/* Location Filter */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Localisation</label>
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Localisation</label>
                   <input
                     type="text"
                     placeholder="Paris, Lyon..."
                     value={filters.location}
                     onChange={(e) => handleFilterChange('location', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className="w-full px-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                   />
                 </div>
 
                 {/* Featured Filter */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Options</label>
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Options</label>
                   <label className="flex items-center">
                     <input
                       type="checkbox"
@@ -1319,15 +1339,15 @@ export default function InventoryListing() {
                       onChange={(e) => handleFilterChange('featured', e.target.checked ? true : undefined)}
                       className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                     />
-                    <span className="ml-2 text-sm text-gray-600">Mis en avant uniquement</span>
+                    <span className="ml-2 text-xs sm:text-sm text-gray-600">Mis en avant uniquement</span>
                   </label>
                 </div>
               </div>
 
-              <div className="flex justify-end mt-4">
+              <div className="flex justify-end mt-3 sm:mt-4">
                 <button
                   onClick={clearFilters}
-                  className="px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                 >
                   Effacer tous les filtres
                 </button>
@@ -1336,111 +1356,125 @@ export default function InventoryListing() {
           )}
         </div>
 
-        {/* Results Summary & Items Per Page */}
-        <div className="mb-4 flex justify-between items-center">
-          <div className="text-sm text-gray-600">
-            {filteredData.length.toLocaleString()} résultat{filteredData.length > 1 ? 's' : ''} trouvé{filteredData.length > 1 ? 's' : ''}
-          </div>
-          <div className="flex items-center gap-2">
-            <label className="text-sm text-gray-600">Éléments par page:</label>
-            <select
-              value={itemsPerPage}
-              onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
-            >
-              <option value={10}>10</option>
-              <option value={25}>25</option>
-              <option value={50}>50</option>
-              <option value={100}>100</option>
-            </select>
+        {/* Results Summary & Items Per Page - Appliqué aux 2 tableaux */}
+        <div className="mb-3 sm:mb-4 bg-indigo-50 border border-indigo-200 rounded-lg p-3">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div className="text-xs sm:text-sm text-gray-700">
+              <div className="font-semibold text-indigo-700 mb-1">Configuration de pagination globale</div>
+              <div className="flex gap-4">
+                <span><span className="font-medium">Inventaire:</span> {filteredData.length.toLocaleString()} résultat{filteredData.length > 1 ? 's' : ''}</span>
+                <span><span className="font-medium">Demandes:</span> {mockRequestsData.length} résultat{mockRequestsData.length > 1 ? 's' : ''}</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 bg-white px-3 py-2 rounded-lg border border-indigo-300">
+              <label className="text-xs sm:text-sm text-gray-700 font-medium">Éléments par page (2 tableaux):</label>
+              <select
+                value={itemsPerPage}
+                onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
+                className="px-2 sm:px-3 py-1 sm:py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-xs sm:text-sm font-semibold bg-white"
+              >
+                <option value={5}>5</option>
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={50}>50</option>
+                <option value={75}>75</option>
+                <option value={100}>100</option>
+              </select>
+            </div>
           </div>
         </div>
 
         {/* Custom Table */}
         <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
+          <div className="overflow-x-auto -mx-4 sm:mx-0">
+            <table className="min-w-[1200px] sm:min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-32">
+                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider w-20 sm:w-32">
                     Images
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Type (##)
+                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Type
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Titre
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Catégorie (###)
+                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                    Catégorie
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Sous-catégorie (####)
+                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">
+                    Sous-catégorie
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden xl:table-cell">
                     Priorité
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Prix
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">
                     Localisation
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">
                     Utilisateur
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden xl:table-cell">
                     Stats
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
                     Statut
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">
                     Créé le
                   </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {paginatedData.map((item) => (
-                  <tr key={item.id} className="hover:bg-gray-50 h-28">
-                    <td className="px-4 py-4 whitespace-nowrap align-top">
-                      <ImageCellRenderer value={item.images} />
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap">
-                      <TypeCellRenderer value={item.type} />
-                    </td>
-                    <td className="px-4 py-4">
-                      <div className="font-semibold text-sm text-gray-900">{item.title}</div>
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-600">
-                      {item.category}
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {item.subcategory}
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap">
-                      <PriorityCellRenderer value={item.priority} />
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap">
-                      <PriceCellRenderer value={item.price} data={item} />
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap">
-                      <div className="flex items-center gap-1 text-sm text-gray-600">
-                        <MapPin className="w-3 h-3 text-gray-400" />
-                        {item.location}
+                  <tr key={item.id} className="hover:bg-gray-50 h-20 sm:h-28">
+                    <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap align-top">
+                      <div className="scale-75 sm:scale-100 origin-left">
+                        <ImageCellRenderer value={item.images} />
                       </div>
                     </td>
-                    <td className="px-4 py-4 whitespace-nowrap">
+                    <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap">
+                      <div className="scale-75 sm:scale-100 origin-left">
+                        <TypeCellRenderer value={item.type} />
+                      </div>
+                    </td>
+                    <td className="px-2 sm:px-4 py-2 sm:py-4">
+                      <div className="font-semibold text-xs sm:text-sm text-gray-900 line-clamp-2">{item.title}</div>
+                    </td>
+                    <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-600 hidden md:table-cell">
+                      {item.category}
+                    </td>
+                    <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500 hidden lg:table-cell">
+                      {item.subcategory}
+                    </td>
+                    <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap hidden xl:table-cell">
+                      <PriorityCellRenderer value={item.priority} />
+                    </td>
+                    <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap">
+                      <div className="text-xs sm:text-sm">
+                        <PriceCellRenderer value={item.price} data={item} />
+                      </div>
+                    </td>
+                    <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap hidden sm:table-cell">
+                      <div className="flex items-center gap-1 text-xs sm:text-sm text-gray-600">
+                        <MapPin className="w-3 h-3 text-gray-400" />
+                        <span className="hidden md:inline">{item.location}</span>
+                      </div>
+                    </td>
+                    <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap hidden lg:table-cell">
                       <UserCellRenderer value={item.user} />
                     </td>
-                    <td className="px-4 py-4 whitespace-nowrap">
+                    <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap hidden xl:table-cell">
                       <StatsCellRenderer data={item} />
                     </td>
-                    <td className="px-4 py-4 whitespace-nowrap">
+                    <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap hidden md:table-cell">
                       <StatusCellRenderer value={item.status} data={item} />
                     </td>
-                    <td className="px-4 py-4 whitespace-nowrap">
-                      <div className="flex items-center gap-1 text-sm text-gray-600">
+                    <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap hidden lg:table-cell">
+                      <div className="flex items-center gap-1 text-xs sm:text-sm text-gray-600">
                         <Calendar className="w-3 h-3 text-gray-400" />
                         {new Date(item.createdAt).toLocaleDateString('fr-FR')}
                       </div>
@@ -1453,24 +1487,25 @@ export default function InventoryListing() {
 
           {/* Pagination */}
           {totalPagesInventory > 1 && (
-            <div className="bg-white px-4 py-3 border-t border-gray-200">
-              <div className="flex items-center justify-center gap-4">
+            <div className="bg-white px-2 sm:px-4 py-2 sm:py-3 border-t border-gray-200">
+              <div className="flex items-center justify-center gap-2 sm:gap-4">
                 <button
                   onClick={() => setCurrentPageInventory(prev => Math.max(prev - 1, 1))}
                   disabled={currentPageInventory === 1}
-                  className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 transition-colors"
+                  className="px-2 sm:px-4 py-1 sm:py-2 border border-gray-300 rounded-lg text-xs sm:text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 transition-colors"
                 >
                   Précédent
                 </button>
-                <span className="text-sm text-gray-700">
+                <span className="text-xs sm:text-sm text-gray-700">
                   Page <span className="font-semibold">{currentPageInventory}</span> / <span className="font-semibold">{totalPagesInventory}</span>
-                  <span className="mx-2 text-gray-400">•</span>
-                  <span className="font-medium">{filteredData.length}</span> résultats
+                  <span className="mx-1 sm:mx-2 text-gray-400 hidden sm:inline">•</span>
+                  <span className="font-medium hidden sm:inline">{filteredData.length}</span>
+                  <span className="hidden sm:inline"> résultats</span>
                 </span>
                 <button
                   onClick={() => setCurrentPageInventory(prev => Math.min(prev + 1, totalPagesInventory))}
                   disabled={currentPageInventory === totalPagesInventory}
-                  className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 transition-colors"
+                  className="px-2 sm:px-4 py-1 sm:py-2 border border-gray-300 rounded-lg text-xs sm:text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 transition-colors"
                 >
                   Suivant
                 </button>
@@ -1489,6 +1524,17 @@ export default function InventoryListing() {
                 totalResults={filteredData.length}
               />
             </div>
+          </div>
+
+          {/* Requests Panel - Second on mobile/tablet, left on desktop (1/3) */}
+          <div className="w-full xl:w-1/3 order-2 xl:order-1">
+            <RequestsPanel 
+              itemsPerPage={itemsPerPage} 
+              currentPage={currentPageRequests} 
+              setCurrentPage={setCurrentPageRequests}
+              totalPages={Math.ceil(mockRequestsData.length / itemsPerPage)}
+              totalItems={mockRequestsData.length}
+            />
           </div>
         </div>
       </div>
