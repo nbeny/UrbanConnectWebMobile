@@ -12,19 +12,51 @@ interface FilterDrawerProps {
   totalResults: number;
 }
 
-const categories = [
-  'Toutes catégories',
-  'Électronique',
-  'Musique',
-  'Informatique',
-  'Sport',
-  'Travaux',
-  'Mode',
-  'Maison & Jardin',
-  'Automobile',
-  'Loisirs',
-  'Emploi & Services'
-];
+// Import de la structure depuis InventoryListing
+const allovoisinStructure = {
+  'Service': [
+    'Bricolage - Travaux',
+    'Jardinage - Piscine',
+    'Déménagement - Manutention',
+    'Dépannage - Réparation de matériel',
+    'Entretien - Réparation véhicules',
+    'Services à la personne',
+    'Enfants',
+    'Animaux',
+    'Informatique et web',
+    'Photographie - Vidéo',
+    'Animation - Evénements',
+    'Cours - Formations',
+    'Administratif - Bureautique',
+    'Mode - Santé - Bien être',
+    'Sport - Partenaires',
+    'Restauration - Réception'
+  ],
+  'Objet': [
+    'Outillage & Travaux',
+    'Matériel de Jardin',
+    'Maison & Confort',
+    'Evénement, Réception & Fête',
+    'High Tech & Fournitures de bureau',
+    'Matériel de Sport',
+    'Loisirs',
+    'Mode & Accessoires Adulte, Bien-être & Bagagerie',
+    'Mode Enfant, Bébé & Puériculture',
+    'Transport & Accessoires Auto, Moto & Bateau',
+    'Immobilier'
+  ]
+};
+
+// Génération de toutes les catégories pour les filtres
+const getAllSubcategories = () => {
+  const subcategories = ['Toutes catégories'];
+  Object.keys(allovoisinStructure).forEach(type => {
+    subcategories.push(...allovoisinStructure[type]);
+  });
+  return subcategories;
+};
+
+const categories = getAllSubcategories();
 
 const sortOptions = [
   { value: 'relevance', label: 'Pertinence' },
@@ -43,7 +75,9 @@ export default function FilterDrawer({
   totalResults
 }: FilterDrawerProps) {
   const [expandedSections, setExpandedSections] = useState({
+    types: true,
     categories: true,
+    subcategories: false,
     delivery: false,
     price: true,
     status: true,
@@ -122,31 +156,85 @@ export default function FilterDrawer({
         {/* Content */}
         <div className="flex-1 overflow-y-auto">
 
+          {/* Types */}
+          <FilterSection
+            title="Types (##)"
+            isExpanded={expandedSections.types}
+            onToggle={() => toggleSection('types')}
+          >
+            <div className="space-y-2">
+              {['Service', 'Objet'].map((type) => (
+                <label key={type} className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={(filters.type || []).includes(type)}
+                    onChange={() => toggleArrayFilter('type', type)}
+                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  />
+                  <span className="ml-2 text-sm text-gray-700">{type}</span>
+                </label>
+              ))}
+            </div>
+          </FilterSection>
+
           {/* Categories */}
           <FilterSection
-            title="Catégories"
+            title="Catégories (###)"
             isExpanded={expandedSections.categories}
             onToggle={() => toggleSection('categories')}
           >
-            <div className="space-y-2">
-              {categories.map((category) => (
-                <label key={category} className="flex items-center">
+            <div className="space-y-2 max-h-48 overflow-y-auto">
+              <label className="flex items-center font-medium">
+                <input
+                  type="checkbox"
+                  checked={(filters.category || []).length === 0}
+                  onChange={() => updateFilter('category', [])}
+                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                />
+                <span className="ml-2 text-sm text-gray-700">Toutes catégories</span>
+              </label>
+              {Object.keys(allovoisinStructure).map(mainType => (
+                Object.keys(allovoisinStructure[mainType] || {}).length > 0 ? 
+                  allovoisinStructure[mainType].map(category => (
+                    <label key={category} className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={(filters.category || []).includes(category)}
+                        onChange={() => toggleArrayFilter('category', category)}
+                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      />
+                      <span className="ml-2 text-sm text-gray-700">{category}</span>
+                    </label>
+                  )) : null
+              ))}
+            </div>
+          </FilterSection>
+
+          {/* Subcategories */}
+          <FilterSection
+            title="Sous-catégories (####)"
+            isExpanded={expandedSections.subcategories}
+            onToggle={() => toggleSection('subcategories')}
+          >
+            <div className="space-y-1 max-h-48 overflow-y-auto">
+              <label className="flex items-center font-medium">
+                <input
+                  type="checkbox"
+                  checked={(filters.subcategory || []).length === 0}
+                  onChange={() => updateFilter('subcategory', [])}
+                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                />
+                <span className="ml-2 text-sm text-gray-700">Toutes sous-catégories</span>
+              </label>
+              {categories.slice(1).map((subcategory) => (
+                <label key={subcategory} className="flex items-center">
                   <input
                     type="checkbox"
-                    checked={category === 'Toutes catégories' ?
-                      (filters.category || []).length === 0 :
-                      (filters.category || []).includes(category)
-                    }
-                    onChange={() => {
-                      if (category === 'Toutes catégories') {
-                        updateFilter('category', []);
-                      } else {
-                        toggleArrayFilter('category', category);
-                      }
-                    }}
+                    checked={(filters.subcategory || []).includes(subcategory)}
+                    onChange={() => toggleArrayFilter('subcategory', subcategory)}
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
-                  <span className="ml-2 text-sm text-gray-700">{category}</span>
+                  <span className="ml-2 text-xs text-gray-600">{subcategory}</span>
                 </label>
               ))}
             </div>
