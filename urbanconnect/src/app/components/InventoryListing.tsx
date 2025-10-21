@@ -1390,40 +1390,40 @@ export default function InventoryListing() {
             <table className="min-w-[1200px] sm:min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider w-20 sm:w-32">
+                  <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider w-20 sm:w-32">
                     Images
                   </th>
-                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Type
                   </th>
-                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Titre
                   </th>
-                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                  <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
                     Catégorie
                   </th>
-                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">
+                  <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">
                     Sous-catégorie
                   </th>
-                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden xl:table-cell">
+                  <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden xl:table-cell">
                     Priorité
                   </th>
-                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Prix
                   </th>
-                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">
+                  <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">
                     Localisation
                   </th>
-                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">
+                  <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">
                     Utilisateur
                   </th>
-                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden xl:table-cell">
+                  <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden xl:table-cell">
                     Stats
                   </th>
-                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                  <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
                     Statut
                   </th>
-                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">
+                  <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">
                     Créé le
                   </th>
                 </tr>
@@ -1431,49 +1431,49 @@ export default function InventoryListing() {
               <tbody className="bg-white divide-y divide-gray-200">
                 {paginatedData.map((item) => (
                   <tr key={item.id} className="hover:bg-gray-50 h-20 sm:h-28">
-                    <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap align-top">
+                    <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap align-top">
                       <div className="scale-75 sm:scale-100 origin-left">
                         <ImageCellRenderer value={item.images} />
                       </div>
                     </td>
-                    <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap">
+                    <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap">
                       <div className="scale-75 sm:scale-100 origin-left">
                         <TypeCellRenderer value={item.type} />
                       </div>
                     </td>
-                    <td className="px-2 sm:px-4 py-2 sm:py-4">
+                    <td className="px-1 sm:px-2 py-2 sm:py-4">
                       <div className="font-semibold text-xs sm:text-sm text-gray-900 line-clamp-2">{item.title}</div>
                     </td>
-                    <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-600 hidden md:table-cell">
+                    <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-600 hidden md:table-cell">
                       {item.category}
                     </td>
-                    <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500 hidden lg:table-cell">
+                    <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500 hidden lg:table-cell">
                       {item.subcategory}
                     </td>
-                    <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap hidden xl:table-cell">
+                    <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap hidden xl:table-cell">
                       <PriorityCellRenderer value={item.priority} />
                     </td>
-                    <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap">
+                    <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap">
                       <div className="text-xs sm:text-sm">
                         <PriceCellRenderer value={item.price} data={item} />
                       </div>
                     </td>
-                    <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap hidden sm:table-cell">
+                    <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap hidden sm:table-cell">
                       <div className="flex items-center gap-1 text-xs sm:text-sm text-gray-600">
                         <MapPin className="w-3 h-3 text-gray-400" />
                         <span className="hidden md:inline">{item.location}</span>
                       </div>
                     </td>
-                    <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap hidden lg:table-cell">
+                    <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap hidden lg:table-cell">
                       <UserCellRenderer value={item.user} />
                     </td>
-                    <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap hidden xl:table-cell">
+                    <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap hidden xl:table-cell">
                       <StatsCellRenderer data={item} />
                     </td>
-                    <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap hidden md:table-cell">
+                    <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap hidden md:table-cell">
                       <StatusCellRenderer value={item.status} data={item} />
                     </td>
-                    <td className="px-2 sm:px-4 py-2 sm:py-4 whitespace-nowrap hidden lg:table-cell">
+                    <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap hidden lg:table-cell">
                       <div className="flex items-center gap-1 text-xs sm:text-sm text-gray-600">
                         <Calendar className="w-3 h-3 text-gray-400" />
                         {new Date(item.createdAt).toLocaleDateString('fr-FR')}
