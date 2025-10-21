@@ -184,150 +184,199 @@ const mockInventoryData = [
   }
 ];
 
-// Générer plus de données mock d'inventaire pour tester la pagination
-for (let i = 9; i <= 120; i++) {
-  const types = ['Objet', 'Service'];
-  const categories = {
-    'Objet': [
-      { cat: 'Outillage & Travaux', sub: 'Outillage & Entretien' },
-      { cat: 'Matériel de Jardin', sub: 'Outillage' },
-      { cat: 'High Tech & Fournitures de bureau', sub: 'Micro & Multimédia' },
-      { cat: 'Loisirs', sub: 'Vélo & Accessoires' },
-      { cat: 'Loisirs', sub: 'Livres' }
-    ],
-    'Service': [
-      { cat: 'Cours de guitare', sub: 'Cours - Formations' },
-      { cat: 'Création site internet', sub: 'Informatique et web' },
-      { cat: 'Plomberie - Installation sanitaire', sub: 'Bricolage - Travaux' },
-      { cat: 'Paysagiste - Aménagement du jardin', sub: 'Jardinage - Piscine' },
-      { cat: 'Baby sitting', sub: 'Enfants' }
-    ]
-  };
-  const locations = ['Paris', 'Lyon', 'Marseille', 'Toulouse', 'Nice', 'Nantes', 'Bordeaux', 'Lille', 'Strasbourg', 'Rennes'];
-  const names = ['Jean', 'Marie', 'Pierre', 'Sophie', 'Thomas', 'Emma', 'Lucas', 'Julie', 'Nicolas', 'Camille'];
-  const surnames = ['Dupont', 'Martin', 'Bernard', 'Dubois', 'Leroy', 'Moreau', 'Simon', 'Laurent', 'Michel', 'Garcia'];
-  
-  const typeIndex = (i - 1) % types.length;
-  const type = types[typeIndex];
-  const catArray = categories[type];
-  const catIndex = (i - 1) % catArray.length;
-  const locIndex = (i - 1) % locations.length;
-  const nameIndex = (i - 1) % names.length;
-  const surnameIndex = (i - 1) % surnames.length;
-  
-  const imageCount = Math.floor(Math.random() * 4) + 1; // 1 à 4 images
-  const images = Array.from({ length: imageCount }, (_, idx) => `https://picsum.photos/200/200?random=${i * 10 + idx}`);
-  
-  mockInventoryData.push({
-    id: i,
-    type: type,
-    title: type === 'Objet' ? `${catArray[catIndex].cat} #${i}` : `Service ${catArray[catIndex].cat} #${i}`,
-    category: catArray[catIndex].cat,
-    subcategory: catArray[catIndex].sub,
-    price: type === 'Objet' ? Math.floor(Math.random() * 2000) + 50 : Math.floor(Math.random() * 80) + 15,
-    location: locations[locIndex],
-    user: { 
-      name: `${names[nameIndex]} ${surnames[surnameIndex]}`, 
-      avatar: `https://i.pravatar.cc/150?img=${i % 70}`, 
-      rating: parseFloat((Math.random() * 2 + 3).toFixed(1)), 
-      type: i % 3 === 0 ? 'professional' : 'individual' 
-    },
-    views: Math.floor(Math.random() * 2000) + 100,
-    likes: Math.floor(Math.random() * 150) + 5,
-    status: i % 10 === 0 ? 'inactive' : 'active',
-    featured: i % 7 === 0,
-    createdAt: `2024-0${Math.floor(Math.random() * 3) + 1}-${String(Math.floor(Math.random() * 28) + 1).padStart(2, '0')}`,
-    description: `${type} ${i} - Description détaillée`,
-    images: images,
-    deliveryAvailable: i % 3 === 0,
-    urgent: i % 8 === 0,
-    adType: 'offer',
-    donation: i % 15 === 0,
-    priority: i % 4 === 0 ? 'high' : i % 7 === 0 ? 'critical' : i % 10 === 0 ? 'low' : 'medium'
-  });
-}
-
-// Mock data pour les demandes de services
-const mockRequestsData = [
+// Mock data pour les posts
+const mockPostsData = [
   {
     id: 1,
-    type: 'Demande',
-    title: 'Recherche serrurier',
-    category: 'Bricolage - Travaux',
-    subcategory: 'Serrurerie',
-    budget: 150,
+    type: 'Poste',
+    title: 'Développeur React Senior',
+    category: 'Informatique et web',
+    subcategory: 'Création site internet',
+    salary: 55000,
     location: 'Paris',
-    user: { name: 'Marc Durand', avatar: 'https://i.pravatar.cc/150?img=20', rating: 4.2 },
-    views: 45,
-    responses: 8,
+    company: { name: 'Tech Corp', avatar: 'https://i.pravatar.cc/150?img=10', rating: 4.7 },
+    views: 2340,
+    applications: 23,
     status: 'active',
-    featured: false,
-    createdAt: '2024-03-18',
-    description: 'Urgence - Serrure bloquée',
-    urgency: 'urgent',
-    priority: 'critical'
+    featured: true,
+    createdAt: '2024-03-10',
+    description: 'Recherche développeur React expérimenté',
+    contract: 'CDI',
+    experience: '5+ ans',
+    priority: 'high'
   },
   {
     id: 2,
-    type: 'Demande',
-    title: 'Recherche plombier',
-    category: 'Bricolage - Travaux',
-    subcategory: 'Plomberie - Installation sanitaire',
-    budget: 200,
+    type: 'Poste',
+    title: 'Designer UI/UX',
+    category: 'Informatique et web',
+    subcategory: 'Graphisme - Création flyer - plaquette',
+    salary: 42000,
     location: 'Lyon',
-    user: { name: 'Claire Martin', avatar: 'https://i.pravatar.cc/150?img=21', rating: 4.6 },
-    views: 67,
-    responses: 12,
+    company: { name: 'Creative Studio', avatar: 'https://i.pravatar.cc/150?img=11', rating: 4.5 },
+    views: 1850,
+    applications: 31,
+    status: 'active',
+    featured: false,
+    createdAt: '2024-03-08',
+    description: 'Designer UI/UX pour applications mobiles',
+    contract: 'CDI',
+    experience: '3+ ans',
+    priority: 'medium'
+  },
+  {
+    id: 3,
+    type: 'Poste',
+    title: 'Chef de projet digital',
+    category: 'Informatique et web',
+    subcategory: 'Webmarketing',
+    salary: 48000,
+    location: 'Marseille',
+    company: { name: 'Digital Agency', avatar: 'https://i.pravatar.cc/150?img=12', rating: 4.8 },
+    views: 1230,
+    applications: 18,
     status: 'active',
     featured: true,
-    createdAt: '2024-03-17',
-    description: 'Fuite d\'eau à réparer rapidement',
-    urgency: 'urgent',
-    priority: 'high'
-  }
-];
-
-// Générer plus de données mock pour les demandes
-for (let i = 3; i <= 120; i++) {
-  const categories = [
-    { cat: 'Bricolage - Travaux', sub: ['Serrurerie', 'Plomberie - Installation sanitaire', 'Installation électrique', 'Maçonnerie', 'Peinture - Tapisserie'] },
-    { cat: 'Jardinage - Piscine', sub: ['Jardinier', 'Paysagiste - Aménagement du jardin', 'Tonte de pelouse - Débroussaillage'] },
-    { cat: 'Services à la personne', sub: ['Ménage', 'Lingerie - Repassage', 'Aide à domicile'] },
-    { cat: 'Enfants', sub: ['Baby sitting', 'Nounou', 'Aide aux devoirs'] },
-    { cat: 'Cours - Formations', sub: ['Cours de guitare', 'Cours de piano', 'Cours de maths', 'Cours d\'anglais'] }
-  ];
-  const locations = ['Paris', 'Lyon', 'Marseille', 'Toulouse', 'Nice', 'Nantes', 'Bordeaux', 'Lille', 'Strasbourg', 'Rennes'];
-  const names = ['Marc', 'Sophie', 'Pierre', 'Julie', 'Thomas', 'Marie', 'Lucas', 'Emma', 'Nicolas', 'Camille'];
-  const urgencies = ['urgent', 'urgent', 'normal', 'normal', 'normal'];
-  
-  const catIndex = (i - 1) % categories.length;
-  const subIndex = (i - 1) % categories[catIndex].sub.length;
-  const locIndex = (i - 1) % locations.length;
-  const nameIndex = (i - 1) % names.length;
-  
-  mockRequestsData.push({
-    id: i,
-    type: 'Demande',
-    title: `Recherche ${categories[catIndex].sub[subIndex].toLowerCase()}`,
-    category: categories[catIndex].cat,
-    subcategory: categories[catIndex].sub[subIndex],
-    budget: Math.floor(Math.random() * 400) + 50,
-    location: locations[locIndex],
-    user: { name: `${names[nameIndex]} ${i}`, avatar: `https://i.pravatar.cc/150?img=${20 + (i % 50)}`, rating: parseFloat((Math.random() * 2 + 3).toFixed(1)) },
-    views: Math.floor(Math.random() * 300) + 20,
-    responses: Math.floor(Math.random() * 30) + 1,
-    status: 'active',
-    featured: i % 5 === 0,
-    createdAt: `2024-03-${String(Math.floor(Math.random() * 28) + 1).padStart(2, '0')}`,
-    description: `Demande de service ${i}`,
-    urgency: urgencies[(i - 1) % urgencies.length],
-    priority: i % 3 === 0 ? 'high' : i % 5 === 0 ? 'critical' : 'medium'
-  });
-}
-
-// Mock data pour les postes (offres d'emploi)
-const mockPostsData = [
+    createdAt: '2024-03-05',
+    description: 'Management d\'équipes digitales',
+    contract: 'CDI',
+    experience: '4+ ans',
+    priority: 'critical'
+  },
   {
+    id: 4,
+    type: 'Poste',
+    title: 'Développeur Full Stack',
+    category: 'Informatique et web',
+    subcategory: 'Création application mobile',
+    salary: 52000,
+    location: 'Toulouse',
+    company: { name: 'StartupTech', avatar: 'https://i.pravatar.cc/150?img=13', rating: 4.6 },
+    views: 1980,
+    applications: 28,
+    status: 'active',
+    featured: false,
+    createdAt: '2024-03-12',
+    description: 'Développement applications web et mobile',
+    contract: 'CDI',
+    experience: '4+ ans',
+    priority: 'high'
+  },
+  {
+    id: 5,
+    type: 'Poste',
+    title: 'Community Manager',
+    category: 'Informatique et web',
+    subcategory: 'Webmarketing',
+    salary: 32000,
+    location: 'Nice',
+    company: { name: 'Social Media Pro', avatar: 'https://i.pravatar.cc/150?img=14', rating: 4.4 },
+    views: 890,
+    applications: 15,
+    status: 'active',
+    featured: false,
+    createdAt: '2024-03-15',
+    description: 'Gestion des réseaux sociaux',
+    contract: 'CDD',
+    experience: '2+ ans',
+    priority: 'low'
+  },
+  {
+    id: 1,
+    type: 'Poste',
+    title: 'Développeur React Senior',
+    category: 'Informatique et web',
+    subcategory: 'Création site internet',
+    salary: 55000,
+    location: 'Paris',
+    company: { name: 'Tech Corp', avatar: 'https://i.pravatar.cc/150?img=10', rating: 4.7 },
+    views: 2340,
+    applications: 23,
+    status: 'active',
+    featured: true,
+    createdAt: '2024-03-10',
+    description: 'Recherche développeur React expérimenté',
+    contract: 'CDI',
+    experience: '5+ ans',
+    priority: 'high'
+  },
+  {
+    id: 2,
+    type: 'Poste',
+    title: 'Designer UI/UX',
+    category: 'Informatique et web',
+    subcategory: 'Graphisme - Création flyer - plaquette',
+    salary: 42000,
+    location: 'Lyon',
+    company: { name: 'Creative Studio', avatar: 'https://i.pravatar.cc/150?img=11', rating: 4.5 },
+    views: 1850,
+    applications: 31,
+    status: 'active',
+    featured: false,
+    createdAt: '2024-03-08',
+    description: 'Designer UI/UX pour applications mobiles',
+    contract: 'CDI',
+    experience: '3+ ans',
+    priority: 'medium'
+  },
+  {
+    id: 3,
+    type: 'Poste',
+    title: 'Chef de projet digital',
+    category: 'Informatique et web',
+    subcategory: 'Webmarketing',
+    salary: 48000,
+    location: 'Marseille',
+    company: { name: 'Digital Agency', avatar: 'https://i.pravatar.cc/150?img=12', rating: 4.8 },
+    views: 1230,
+    applications: 18,
+    status: 'active',
+    featured: true,
+    createdAt: '2024-03-05',
+    description: 'Management d\'équipes digitales',
+    contract: 'CDI',
+    experience: '4+ ans',
+    priority: 'critical'
+  },
+  {
+    id: 4,
+    type: 'Poste',
+    title: 'Développeur Full Stack',
+    category: 'Informatique et web',
+    subcategory: 'Création application mobile',
+    salary: 52000,
+    location: 'Toulouse',
+    company: { name: 'StartupTech', avatar: 'https://i.pravatar.cc/150?img=13', rating: 4.6 },
+    views: 1980,
+    applications: 28,
+    status: 'active',
+    featured: false,
+    createdAt: '2024-03-12',
+    description: 'Développement applications web et mobile',
+    contract: 'CDI',
+    experience: '4+ ans',
+    priority: 'high'
+  },
+  {
+    id: 5,
+    type: 'Poste',
+    title: 'Community Manager',
+    category: 'Informatique et web',
+    subcategory: 'Webmarketing',
+    salary: 32000,
+    location: 'Nice',
+    company: { name: 'Social Media Pro', avatar: 'https://i.pravatar.cc/150?img=14', rating: 4.4 },
+    views: 890,
+    applications: 15,
+    status: 'active',
+    featured: false,
+    createdAt: '2024-03-15',
+    description: 'Gestion des réseaux sociaux',
+    contract: 'CDD',
+    experience: '2+ ans',
+    priority: 'low'
+  },
+    {
     id: 1,
     type: 'Poste',
     title: 'Développeur React Senior',
@@ -637,41 +686,23 @@ const categories = getAllCategories();
 
 // Custom cell renderers
 const ImageCellRenderer = (params) => {
-  const images = params.value || [];
+  const imageUrl = params.value && params.value.length > 0 ? params.value[0] : null;
 
-  if (images.length === 0) {
+  if (!imageUrl) {
     return (
-      <div className="flex items-center justify-center w-24 h-24 bg-gray-100 rounded-lg">
-        <Package className="w-8 h-8 text-gray-400" />
-      </div>
-    );
-  }
-
-  // Afficher jusqu'à 4 images en grille 2x2
-  const displayImages = images.slice(0, 4);
-  
-  if (displayImages.length === 1) {
-    return (
-      <div className="flex items-center h-full">
-        <img
-          src={displayImages[0]}
-          alt="Product"
-          className="w-24 h-24 object-cover rounded-lg border border-gray-200"
-        />
+      <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-lg">
+        <Package className="w-6 h-6 text-gray-400" />
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-2 gap-1 w-24 h-24">
-      {displayImages.map((img, idx) => (
-        <img
-          key={idx}
-          src={img}
-          alt={`Product ${idx + 1}`}
-          className="w-full h-full object-cover rounded border border-gray-200"
-        />
-      ))}
+    <div className="flex items-center h-full">
+      <img
+        src={imageUrl}
+        alt="Product"
+        className="w-12 h-12 object-cover rounded-lg border border-gray-200"
+      />
     </div>
   );
 };
@@ -859,99 +890,111 @@ const ApplicationsCellRenderer = (params) => {
   );
 };
 
-// Composant RequestsPanel
-const RequestsPanel = ({ itemsPerPage, currentPage, setCurrentPage }) => {
-  const totalPages = Math.ceil(mockRequestsData.length / itemsPerPage);
-  const paginatedRequests = useMemo(() => {
+// Composant PostsPanel
+const PostsPanel = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
+  
+  const totalPages = Math.ceil(mockPostsData.length / itemsPerPage);
+  const paginatedPosts = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
-    return mockRequestsData.slice(startIndex, startIndex + itemsPerPage);
-  }, [currentPage, itemsPerPage]);
+    return mockPostsData.slice(startIndex, startIndex + itemsPerPage);
+  }, [currentPage]);
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
       {/* Header */}
       <div className="px-4 py-3 border-b border-gray-200 bg-gray-50">
-        <h2 className="text-lg font-semibold text-gray-900">Demandes de services</h2>
-        <p className="text-sm text-gray-600">{mockRequestsData.length} demandes disponibles</p>
+        <h2 className="text-lg font-semibold text-gray-900">Offres d'emploi</h2>
+        <p className="text-sm text-gray-600">{mockPostsData.length} postes disponibles</p>
       </div>
 
-      {/* Requests Table */}
+      {/* Posts Table */}
       <div className="overflow-hidden">
-        <div className="h-[800px] overflow-y-auto">
+        <div className="max-h-96 overflow-y-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50 sticky top-0">
               <tr>
                 <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Type
+                  Type (##)
                 </th>
                 <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Titre
                 </th>
                 <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Catégorie
+                  Catégorie (###)
                 </th>
                 <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Budget
+                  Sous-catégorie (####)
                 </th>
                 <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Localisation
+                  Salaire
                 </th>
                 <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Utilisateur
+                  Entreprise
                 </th>
                 <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Réponses
-                </th>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Priorité
+                  Stats
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {paginatedRequests.map((request) => (
-                <tr key={request.id} className="hover:bg-gray-50">
+              {paginatedPosts.map((post) => (
+                <tr key={post.id} className="hover:bg-gray-50">
                   <td className="px-3 py-2 whitespace-nowrap">
-                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
-                      <Wrench className="w-3 h-3" />
-                      Demande
-                    </span>
+                    <TypeCellRenderer value={post.type} />
                   </td>
                   <td className="px-3 py-2">
-                    <div className="font-semibold text-sm text-gray-900">{request.title}</div>
-                    <div className="text-xs text-gray-500">{request.description}</div>
+                    <div className="font-semibold text-sm text-gray-900">{post.title}</div>
+                    <div className="text-xs text-gray-500">{post.contract} - {post.experience}</div>
                   </td>
                   <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-600">
-                    {request.category}
+                    {post.category}
+                  </td>
+                  <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                    {post.subcategory}
                   </td>
                   <td className="px-3 py-2 whitespace-nowrap">
-                    <span className="font-semibold text-green-600">{request.budget}€</span>
+                    <SalaryCellRenderer value={post.salary} />
                   </td>
                   <td className="px-3 py-2 whitespace-nowrap">
-                    <div className="flex items-center gap-1 text-sm text-gray-600">
-                      <MapPin className="w-3 h-3 text-gray-400" />
-                      {request.location}
-                    </div>
+                    <CompanyCellRenderer value={post.company} />
                   </td>
                   <td className="px-3 py-2 whitespace-nowrap">
-                    <UserCellRenderer value={request.user} />
-                  </td>
-                  <td className="px-3 py-2 whitespace-nowrap">
-                    <div className="flex items-center gap-1 text-xs text-gray-500">
-                      <User className="w-3 h-3" />
-                      {request.responses}
-                    </div>
-                  </td>
-                  <td className="px-3 py-2 whitespace-nowrap">
-                    <PriorityCellRenderer value={request.priority} />
+                    <ApplicationsCellRenderer data={post} />
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        </div>
+        
+        {/* Simple Pagination */}
+        {totalPages > 1 && (
+          <div className="bg-white px-4 py-3 border-t border-gray-200">
+            <div className="flex justify-between items-center">
+              <button
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50"
+              >
+                Précédent
+              </button>
+              <span className="text-sm text-gray-700">
+                Page {currentPage} sur {totalPages}
+              </span>
+              <button
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50"
+              >
+                Suivant
+              </button>
+            </div>
+          </div>
+        )}
       </div>
-    
+    </div>
   );
 };
 
@@ -959,9 +1002,8 @@ export default function InventoryListing() {
   const [searchText, setSearchText] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [showFilterDrawer, setShowFilterDrawer] = useState(false);
-  const [currentPageInventory, setCurrentPageInventory] = useState(1);
-  const [currentPageRequests, setCurrentPageRequests] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(25);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 50;
   
   const [filters, setFilters] = useState({
     type: [],
@@ -1090,23 +1132,16 @@ export default function InventoryListing() {
     return data;
   }, [searchText, filters]);
 
-  // Pagination pour l'inventaire
-  const totalPagesInventory = Math.ceil(filteredData.length / itemsPerPage);
+  // Pagination
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const paginatedData = useMemo(() => {
-    const startIndex = (currentPageInventory - 1) * itemsPerPage;
+    const startIndex = (currentPage - 1) * itemsPerPage;
     return filteredData.slice(startIndex, startIndex + itemsPerPage);
-  }, [filteredData, currentPageInventory, itemsPerPage]);
-
-  // Synchronisation des pages
-  const handleItemsPerPageChange = (newItemsPerPage) => {
-    setItemsPerPage(newItemsPerPage);
-    setCurrentPageInventory(1);
-    setCurrentPageRequests(1);
-  };
+  }, [filteredData, currentPage]);
 
   const handleFilterChange = (key, value) => {
     setFilters(prev => ({ ...prev, [key]: value }));
-    setCurrentPageInventory(1);
+    setCurrentPage(1);
   };
 
   const clearFilters = () => {
@@ -1127,8 +1162,7 @@ export default function InventoryListing() {
       urgent_only: false
     });
     setSearchText('');
-    setCurrentPageInventory(1);
-    setCurrentPageRequests(1);
+    setCurrentPage(1);
   };
 
   const getActiveFiltersCount = () => {
@@ -1151,7 +1185,7 @@ export default function InventoryListing() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen p-6 mt-20 mb-24">
+    <div className="bg-gray-50 min-h-screen p-6">
       <div className="max-w-full mx-auto">
         {/* Header */}
         <div className="mb-6">
@@ -1159,15 +1193,11 @@ export default function InventoryListing() {
           <p className="text-gray-600">Gérez vos produits, services, utilisateurs et offres d'emploi</p>
         </div>
 
-        {/* Main Layout: Requests (1/3) + Inventory (2/3) */}
+        {/* Main Layout: Posts (1/3) + Inventory (2/3) */}
         <div className="flex gap-6">
-          {/* Left Panel - Demandes de services (1/3 de l'écran) */}
+          {/* Left Panel - Posts (1/3 de l'ecran) */}
           <div className="w-1/3">
-            <RequestsPanel 
-              itemsPerPage={itemsPerPage} 
-              currentPage={currentPageRequests} 
-              setCurrentPage={setCurrentPageRequests} 
-            />
+            <PostsPanel />
           </div>
 
           {/* Right Panel - Inventory (2/3 de l'ecran) */}
@@ -1186,7 +1216,7 @@ export default function InventoryListing() {
                 value={searchText}
                 onChange={(e) => {
                   setSearchText(e.target.value);
-                  setCurrentPageInventory(1);
+                  setCurrentPage(1);
                 }}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
@@ -1248,7 +1278,7 @@ export default function InventoryListing() {
                 {/* Category Filter */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Catégorie (###)</label>
-                  <div className="max-h-56 overflow-y-auto space-y-2">
+                  <div className="max-h-32 overflow-y-auto space-y-2">
                     {Object.keys(urbanConnectCategories).map(mainType => (
                       Object.keys(urbanConnectCategories[mainType]).map(category => (
                         <label key={category} className="flex items-center">
@@ -1273,7 +1303,7 @@ export default function InventoryListing() {
                 {/* Subcategory Filter */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Sous-catégorie (####)</label>
-                  <div className="max-h-56 overflow-y-auto space-y-2">
+                  <div className="max-h-32 overflow-y-auto space-y-2">
                     {Object.keys(urbanConnectCategories).map(mainType => (
                       Object.keys(urbanConnectCategories[mainType]).map(category => (
                         urbanConnectCategories[mainType][category].map(subcategory => (
@@ -1336,23 +1366,10 @@ export default function InventoryListing() {
           )}
         </div>
 
-        {/* Results Summary & Items Per Page */}
+        {/* Results Summary */}
         <div className="mb-4 flex justify-between items-center">
           <div className="text-sm text-gray-600">
             {filteredData.length.toLocaleString()} résultat{filteredData.length > 1 ? 's' : ''} trouvé{filteredData.length > 1 ? 's' : ''}
-          </div>
-          <div className="flex items-center gap-2">
-            <label className="text-sm text-gray-600">Éléments par page:</label>
-            <select
-              value={itemsPerPage}
-              onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
-            >
-              <option value={10}>10</option>
-              <option value={25}>25</option>
-              <option value={50}>50</option>
-              <option value={100}>100</option>
-            </select>
           </div>
         </div>
 
@@ -1362,8 +1379,8 @@ export default function InventoryListing() {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-32">
-                    Images
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Image
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Type (##)
@@ -1402,8 +1419,8 @@ export default function InventoryListing() {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {paginatedData.map((item) => (
-                  <tr key={item.id} className="hover:bg-gray-50 h-28">
-                    <td className="px-4 py-4 whitespace-nowrap align-top">
+                  <tr key={item.id} className="hover:bg-gray-50">
+                    <td className="px-4 py-4 whitespace-nowrap">
                       <ImageCellRenderer value={item.images} />
                     </td>
                     <td className="px-4 py-4 whitespace-nowrap">
@@ -1452,28 +1469,65 @@ export default function InventoryListing() {
           </div>
 
           {/* Pagination */}
-          {totalPagesInventory > 1 && (
-            <div className="bg-white px-4 py-3 border-t border-gray-200">
-              <div className="flex items-center justify-center gap-4">
+          {totalPages > 1 && (
+            <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+              <div className="flex-1 flex justify-between sm:hidden">
                 <button
-                  onClick={() => setCurrentPageInventory(prev => Math.max(prev - 1, 1))}
-                  disabled={currentPageInventory === 1}
-                  className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 transition-colors"
+                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
                 >
                   Précédent
                 </button>
-                <span className="text-sm text-gray-700">
-                  Page <span className="font-semibold">{currentPageInventory}</span> / <span className="font-semibold">{totalPagesInventory}</span>
-                  <span className="mx-2 text-gray-400">•</span>
-                  <span className="font-medium">{filteredData.length}</span> résultats
-                </span>
                 <button
-                  onClick={() => setCurrentPageInventory(prev => Math.min(prev + 1, totalPagesInventory))}
-                  disabled={currentPageInventory === totalPagesInventory}
-                  className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 transition-colors"
+                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
                 >
                   Suivant
                 </button>
+              </div>
+              <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-sm text-gray-700">
+                    Affichage de <span className="font-medium">{(currentPage - 1) * itemsPerPage + 1}</span> à{' '}
+                    <span className="font-medium">
+                      {Math.min(currentPage * itemsPerPage, filteredData.length)}
+                    </span>{' '}
+                    sur <span className="font-medium">{filteredData.length}</span> résultats
+                  </p>
+                </div>
+                <div>
+                  <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                      disabled={currentPage === 1}
+                      className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+                    >
+                      Précédent
+                    </button>
+                    {[...Array(totalPages)].map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setCurrentPage(idx + 1)}
+                        className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                          currentPage === idx + 1
+                            ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
+                            : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+                        }`}
+                      >
+                        {idx + 1}
+                      </button>
+                    ))}
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                      disabled={currentPage === totalPages}
+                      className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+                    >
+                      Suivant
+                    </button>
+                  </nav>
+                </div>
               </div>
             </div>
           )}
