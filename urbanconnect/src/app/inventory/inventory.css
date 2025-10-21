@@ -1,0 +1,164 @@
+/* Styles personnalisés pour AG-Grid dans le thème UrbanConnect */
+
+.ag-theme-alpine {
+  --ag-header-height: 50px;
+  --ag-row-height: 60px;
+  --ag-border-color: #e5e7eb;
+  --ag-header-background-color: #f9fafb;
+  --ag-odd-row-background-color: #ffffff;
+  --ag-even-row-background-color: #f9fafb;
+  --ag-row-hover-color: #f3f4f6;
+  --ag-selected-row-background-color: #ddd6fe;
+  --ag-font-family: inherit;
+  --ag-font-size: 14px;
+  --ag-header-font-weight: 600;
+  --ag-cell-horizontal-padding: 12px;
+  --ag-header-column-separator-display: block;
+  --ag-header-column-separator-color: #e5e7eb;
+  --ag-primary-color: #333333;
+  --ag-accent-color: #333333;
+}
+
+.ag-theme-alpine .ag-header {
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.ag-theme-alpine .ag-header-cell {
+  font-weight: 600;
+  color: #374151;
+}
+
+.ag-theme-alpine .ag-row {
+  transition: background-color 0.2s ease;
+}
+
+.ag-theme-alpine .ag-row:hover {
+  background-color: #f3f4f6;
+}
+
+.ag-theme-alpine .ag-cell {
+  display: flex;
+  align-items: center;
+  line-height: 1.4;
+}
+
+/* Styles pour les badges de type */
+.ag-theme-alpine .type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Styles pour les filtres */
+.ag-theme-alpine .ag-filter-wrapper {
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.ag-theme-alpine .ag-menu {
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Pagination personnalisée */
+.ag-theme-alpine .ag-paging-panel {
+  border-top: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+  padding: 12px;
+}
+
+.ag-theme-alpine .ag-paging-button {
+  background-color: white;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 6px 12px;
+  margin: 0 2px;
+  transition: all 0.2s ease;
+}
+
+.ag-theme-alpine .ag-paging-button:hover {
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.ag-theme-alpine .ag-paging-button.ag-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Styles pour les checkboxes de sélection */
+.ag-theme-alpine .ag-checkbox-input-wrapper input[type="checkbox"] {
+  accent-color: #333333;
+  border-radius: 4px;
+}
+
+/* Animation des lignes */
+.ag-theme-alpine .ag-row {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .ag-theme-alpine {
+    --ag-cell-horizontal-padding: 8px;
+    --ag-font-size: 13px;
+  }
+  
+  .ag-theme-alpine .ag-header-cell-text {
+    font-size: 13px;
+  }
+}
+
+/* Couleurs pour les statuts */
+.status-active {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.status-inactive {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.status-pending {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.status-featured {
+  background-color: #ede9fe;
+  color: #6b21a8;
+}
+
+/* Amélioration de l'affichage des images */
+.ag-theme-alpine .product-image {
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid #e5e7eb;
+}
+
+/* Style pour les ratings */
+.user-rating {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.user-rating .star {
+  color: #fbbf24;
+}

@@ -9,6 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "ag-grid-community": "^34.2.0",
+    "ag-grid-react": "^34.2.0",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.23.24",
     "keen-slider": "^6.8.6",

@@ -1,0 +1,2 @@
+Profile:
+- generation de CV/PDF/word/X a partir de la page profile

@@ -327,6 +327,9 @@ export default function Home() {
               <button className="h-12 rounded-lg bg-primary/20 dark:bg-primary/30 font-bold hover:bg-primary/30 dark:hover:bg-primary/40 transition-colors">
                 Se Connecter
               </button>
+              <a href="/inventory" className="h-12 rounded-lg bg-green-600 text-white font-bold hover:bg-green-700 transition-colors flex items-center justify-center">
+                📋 Voir l'Inventaire
+              </a>
             </div>
           </div>
 

@@ -1,14 +1,13 @@
 'use client';
 
-import { Bell, CircleUser, Building2, Filter, Search, LogOut, User, X } from "lucide-react";
+import { Bell, CircleUser, Building2, Search, LogOut, User, X } from "lucide-react";
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 
 export default function TopBarTranspartUrbanConnect() {
-    const [showFilters, setShowFilters] = useState(false);
     const [showUserMenu, setShowUserMenu] = useState(false);
     const [showNotifications, setShowNotifications] = useState(false);
-
+    
     const userMenuRef = useRef<HTMLDivElement>(null);
     const notificationsRef = useRef<HTMLDivElement>(null);
 
@@ -60,16 +59,6 @@ export default function TopBarTranspartUrbanConnect() {
 
                     {/* Boutons */}
                     <div className="flex items-center space-x-3 relative">
-                        <button
-                            onClick={() => setShowFilters(!showFilters)}
-                            className={`flex items-center px-4 py-2 rounded-full text-sm font-medium border border-white/20 hover:scale-105 transition-all duration-300 ${
-                                showFilters ? "bg-white/30 text-black" : "text-black hover:text-primary-400"
-                            }`}
-                        >
-                            <Filter className="h-4 w-4 mr-2" />
-                            <span>Filters</span>
-                        </button>
-
                         {/* Notifications */}
                         <div className="relative" ref={notificationsRef}>
                             <button
@@ -145,16 +134,6 @@ export default function TopBarTranspartUrbanConnect() {
                         </div>
 
                         <div className="flex items-center space-x-2 relative">
-                            <button
-                                onClick={() => setShowFilters(!showFilters)}
-                                className={`flex items-center px-3 py-1.5 rounded-full text-xs font-medium border border-white/20 hover:scale-105 transition-all duration-300 ${
-                                    showFilters ? "bg-white/30 text-black" : "text-black hover:text-primary-400"
-                                }`}
-                            >
-                                <Filter className="h-3.5 w-3.5 mr-1" />
-                                <span>Filters</span>
-                            </button>
-
                             {/* Notifications Mobile */}
                             <div className="relative" ref={notificationsRef}>
                                 <button
@@ -233,6 +212,7 @@ export default function TopBarTranspartUrbanConnect() {
                     </div>
                 </div>
             </div>
+            
         </nav>
     );
 }
