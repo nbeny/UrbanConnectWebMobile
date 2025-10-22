@@ -944,7 +944,7 @@ const ProfileSlug: NextPage = () => {
                     </div>
 
                     {/* Profile header */}
-                    <div className="max-w-6xl mx-auto px-4">
+                    <div className="max-w-7xl lg:max-w-full lg:px-12 xl:px-24 mx-auto px-4">
                         <div className="relative -mt-20 flex flex-col md:flex-row items-center md:items-end space-y-4 md:space-y-0 md:space-x-6">
                             <div className="w-40 h-40 border-4 border-white rounded-full overflow-hidden shadow">
                                 <Image
@@ -1315,8 +1315,8 @@ const ProfileSlug: NextPage = () => {
                                     </div>
                                 </div>
                             ) : (
-                                // Layout standard pour Journal, Produits et Services (3 colonnes)
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                // Layout standard pour Journal, Produits et Services (3 colonnes, mais journal utilise 2 colonnes pour le contenu principal)
+                                <div className={`grid gap-6 ${activeTab === "journal" ? "grid-cols-1 md:grid-cols-4" : "grid-cols-1 md:grid-cols-3"}`}>
                                     {/* Left column - Using same content structure as original */}
                                     <div className="space-y-4">
                                         {/* About Section - Dynamic content based on active tab */}
@@ -1495,7 +1495,7 @@ const ProfileSlug: NextPage = () => {
                                     </div>
 
                                     {/* Center column - Dynamic content based on active tab */}
-                                    <div className="md:col-span-1 space-y-4">
+                                    <div className={`space-y-4 ${activeTab === "journal" ? "md:col-span-2" : "md:col-span-1"}`}>
                                         {/* Journal Tab */}
                                         {activeTab === "journal" && currentProfile.posts.map((post) => (
                                             <div key={post.id} className="backdrop-blur-lg bg-white/30 p-4 rounded-xl border border-white/20">
@@ -1514,10 +1514,28 @@ const ProfileSlug: NextPage = () => {
                                                         <Image src={post.image} alt="Post image" width={600} height={400} className="rounded object-cover" />
                                                     </div>
                                                 )}
-                                                <div className="flex justify-between text-gray-600 mt-2 border-t pt-2">
-                                                    <button className="flex items-center space-x-1 hover:text-blue-600"><FaThumbsUp /> <span>{post.likes}</span></button>
-                                                    <button className="flex items-center space-x-1 hover:text-green-600"><FaComment /> <span>{post.comments}</span></button>
-                                                    <button className="flex items-center space-x-1 hover:text-purple-600"><FaShare /> <span>{post.shares}</span></button>
+                                                <div className="flex gap-3 mt-4">
+                                                    <button className="group flex-1 relative overflow-hidden backdrop-blur-sm bg-gradient-to-r from-blue-500/10 to-blue-600/10 hover:from-blue-500/20 hover:to-blue-600/20 border border-blue-500/20 hover:border-blue-500/40 rounded-xl px-4 py-2.5 transition-all duration-300 hover:scale-105">
+                                                        <div className="flex items-center justify-center gap-2">
+                                                            <FaThumbsUp className="text-blue-500 group-hover:scale-110 transition-transform duration-200" size={16} />
+                                                            <span className="text-sm font-medium text-blue-600 group-hover:text-blue-700">{post.likes}</span>
+                                                        </div>
+                                                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/5 to-blue-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                                                    </button>
+                                                    <button className="group flex-1 relative overflow-hidden backdrop-blur-sm bg-gradient-to-r from-green-500/10 to-green-600/10 hover:from-green-500/20 hover:to-green-600/20 border border-green-500/20 hover:border-green-500/40 rounded-xl px-4 py-2.5 transition-all duration-300 hover:scale-105">
+                                                        <div className="flex items-center justify-center gap-2">
+                                                            <FaComment className="text-green-500 group-hover:scale-110 transition-transform duration-200" size={16} />
+                                                            <span className="text-sm font-medium text-green-600 group-hover:text-green-700">{post.comments}</span>
+                                                        </div>
+                                                        <div className="absolute inset-0 bg-gradient-to-r from-green-500/0 via-green-500/5 to-green-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                                                    </button>
+                                                    <button className="group flex-1 relative overflow-hidden backdrop-blur-sm bg-gradient-to-r from-purple-500/10 to-purple-600/10 hover:from-purple-500/20 hover:to-purple-600/20 border border-purple-500/20 hover:border-purple-500/40 rounded-xl px-4 py-2.5 transition-all duration-300 hover:scale-105">
+                                                        <div className="flex items-center justify-center gap-2">
+                                                            <FaShare className="text-purple-500 group-hover:scale-110 transition-transform duration-200" size={16} />
+                                                            <span className="text-sm font-medium text-purple-600 group-hover:text-purple-700">{post.shares}</span>
+                                                        </div>
+                                                        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/0 via-purple-500/5 to-purple-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                                                    </button>
                                                 </div>
                                             </div>
                                         ))}
