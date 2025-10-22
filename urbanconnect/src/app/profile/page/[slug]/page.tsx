@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { NextPage } from "next";
 import { FaUserFriends, FaComment, FaShare, FaThumbsUp, FaPlus, FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { Package, Wrench, Calendar, Phone, Mail, MapPin, Star, Users, Clock, Building2, Award, Trophy, Medal, Target, Shield, Zap, Map } from "lucide-react";
+import { Package, Wrench, Calendar, Phone, Mail, MapPin, Star, Users, Clock, Building2, Award, Trophy, Medal, Target, Shield, Zap, Map, AlertTriangle } from "lucide-react";
 import urbanBackground from "@/assets/urbanconnectBackground.png";
 import TopBarTranspartUrbanConnect from "@/app/components/Topbar/TranspartUrbanConnect";
 import BottomBarMobileUrbanConnect from "@/app/components/BottomBar/MobileUrbanConnect";
@@ -140,6 +140,14 @@ interface User {
         avatar: string;
         reason: string;
         blockedDate: string;
+    }[];
+    reportedContacts: {
+        id: number;
+        name: string;
+        avatar: string;
+        reason: string;
+        reportedDate: string;
+        status: string;
     }[];
 }
 
@@ -514,6 +522,24 @@ const ProfileSlug: NextPage = () => {
                     reason: "Comportement inapproprié",
                     blockedDate: "2025-10-10"
                 }
+            ],
+            reportedContacts: [
+                {
+                    id: 1,
+                    name: "Profil Frauduleux",
+                    avatar: "https://images.pexels.com/photos/1108094/pexels-photo-1108094.jpeg",
+                    reason: "Tentative d'arnaque",
+                    reportedDate: "2025-10-12",
+                    status: "En cours d'examen"
+                },
+                {
+                    id: 2,
+                    name: "Faux Compte",
+                    avatar: "https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg",
+                    reason: "Usurpation d'identité",
+                    reportedDate: "2025-10-08",
+                    status: "Traité"
+                }
             ]
         },
         // Add similar complete structures for other profiles...
@@ -639,7 +665,8 @@ const ProfileSlug: NextPage = () => {
                     type: "professional"
                 }
             ],
-            blockedContacts: []
+            blockedContacts: [],
+            reportedContacts: []
         },
         {
             id: "bob-martin",
@@ -763,7 +790,8 @@ const ProfileSlug: NextPage = () => {
                     type: "professional"
                 }
             ],
-            blockedContacts: []
+            blockedContacts: [],
+            reportedContacts: []
         }
     ];
 
@@ -1157,6 +1185,18 @@ const ProfileSlug: NextPage = () => {
                                                     <div className={`text-sm ${activeContactMenu === "blocked" ? "text-red-600" : "text-gray-600"
                                                         }`}>Gestion des utilisateurs bloqués ({currentProfile.blockedContacts.length})</div>
                                                 </button>
+                                                <button
+                                                    onClick={() => setActiveContactMenu("reported")}
+                                                    className={`w-full p-3 text-left rounded-lg transition-colors ${activeContactMenu === "reported"
+                                                            ? "bg-orange-50 border border-orange-200 hover:bg-orange-100"
+                                                            : "bg-gray-50 border rounded-lg hover:bg-gray-100"
+                                                        }`}
+                                                >
+                                                    <div className={`font-semibold ${activeContactMenu === "reported" ? "text-orange-700" : "text-gray-700"
+                                                        }`}>Contacts Signalés</div>
+                                                    <div className={`text-sm ${activeContactMenu === "reported" ? "text-orange-600" : "text-gray-600"
+                                                        }`}>Utilisateurs signalés aux administrateurs ({currentProfile.reportedContacts.length})</div>
+                                                </button>
                                             </div>
                                         </div>
 
@@ -1307,6 +1347,66 @@ const ProfileSlug: NextPage = () => {
                                                         </div>
                                                         <p className="text-xs text-yellow-700 mt-1">
                                                             Débloquer un contact lui permettra de vous contacter à nouveau.
+                                                        </p>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+
+                                        {activeContactMenu === "reported" && (
+                                            <div className="backdrop-blur-lg bg-white/30 p-4 rounded-xl border border-white/20">
+                                                <h3 className="text-xl font-['Manrope:Bold',_sans-serif] text-[#333333] mb-4 flex items-center">
+                                                    <AlertTriangle className="mr-2 text-orange-600" /> Contacts Signalés
+                                                </h3>
+
+                                                {currentProfile.reportedContacts.length > 0 ? (
+                                                    <div className="space-y-3">
+                                                        {currentProfile.reportedContacts.map((contact) => (
+                                                            <div key={contact.id} className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg border border-orange-200">
+                                                                <div className="w-12 h-12 rounded-full overflow-hidden">
+                                                                    <Image src={contact.avatar} alt={contact.name} width={48} height={48} className="object-cover" />
+                                                                </div>
+                                                                <div className="flex-1 min-w-0">
+                                                                    <h4 className="font-semibold text-gray-900 truncate">{contact.name}</h4>
+                                                                    <p className="text-sm text-orange-600">Raison: {contact.reason}</p>
+                                                                    <div className="flex items-center gap-2 mt-1">
+                                                                        <p className="text-xs text-gray-500">Signalé le {new Date(contact.reportedDate).toLocaleDateString('fr-FR')}</p>
+                                                                        <span className={`text-xs px-2 py-0.5 rounded-full ${
+                                                                            contact.status === 'Traité' ? 'bg-green-100 text-green-700' :
+                                                                            contact.status === 'En cours d\'examen' ? 'bg-blue-100 text-blue-700' :
+                                                                            'bg-gray-100 text-gray-700'
+                                                                        }`}>
+                                                                            {contact.status}
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="flex gap-2">
+                                                                    <button className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors">
+                                                                        Détails
+                                                                    </button>
+                                                                    <button className="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700 transition-colors">
+                                                                        Annuler
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                ) : (
+                                                    <div className="text-center py-8">
+                                                        <AlertTriangle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                                                        <p className="text-gray-500">Aucun contact signalé</p>
+                                                        <p className="text-sm text-gray-400 mt-1">Les utilisateurs que vous signalez apparaîtront ici</p>
+                                                    </div>
+                                                )}
+
+                                                {currentProfile.reportedContacts.length > 0 && (
+                                                    <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                                                        <div className="flex items-center gap-2 text-blue-800">
+                                                            <Target className="w-4 h-4" />
+                                                            <span className="text-sm font-medium">Information</span>
+                                                        </div>
+                                                        <p className="text-xs text-blue-700 mt-1">
+                                                            Les signalements sont examinés par nos équipes. Vous serez notifié des suites données.
                                                         </p>
                                                     </div>
                                                 )}
