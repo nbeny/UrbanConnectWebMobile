@@ -11,10 +11,28 @@ import BottomBarMobileUrbanConnect from "@/app/components/BottomBar/MobileUrbanC
 export default function MessagesPage() {
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
   const [newMessage, setNewMessage] = useState("");
+  const [currentPageConversations, setCurrentPageConversations] = useState(1);
+  const [conversationsPerPage, setConversationsPerPage] = useState(10);
+  const [messagesPerPage, setMessagesPerPage] = useState(20);
+  const [currentPageMessages, setCurrentPageMessages] = useState(1);
 
   const currentUserId = 1;
 
-  const currentMessages = selectedConversation ? mockMessages[selectedConversation.id] || [] : [];
+  const allMessages = selectedConversation ? mockMessages[selectedConversation.id] || [] : [];
+  
+  // Pagination des messages
+  const totalPagesMessages = Math.ceil(allMessages.length / messagesPerPage);
+  const currentMessages = allMessages.slice(
+    (currentPageMessages - 1) * messagesPerPage,
+    currentPageMessages * messagesPerPage
+  );
+
+  // Pagination des conversations
+  const totalPagesConversations = Math.ceil(mockConversations.length / conversationsPerPage);
+  const paginatedConversations = mockConversations.slice(
+    (currentPageConversations - 1) * conversationsPerPage,
+    currentPageConversations * conversationsPerPage
+  );
 
   const formatTime = (date: Date) => {
     const now = new Date();
@@ -36,6 +54,11 @@ export default function MessagesPage() {
     setNewMessage("");
   };
 
+  const handleConversationSelect = (conversation: Conversation) => {
+    setSelectedConversation(conversation);
+    setCurrentPageMessages(1); // Réinitialiser la page des messages
+  };
+
   return (
     <div className="bg-white min-h-screen relative w-full overflow-auto">
       {/* Background */}
@@ -52,25 +75,48 @@ export default function MessagesPage() {
       <TopBarTranspartSearchUrbanConnect />
 
       {/* Main Content */}
-      <div className="relative z-[1] mt-20 mb-20 md:mt-24 md:mb-4">
-        <div className="max-w-7xl mx-auto px-4 min-h-[calc(100vh-10rem)] md:min-h-[calc(100vh-8rem)]">
-          <div className="h-full flex flex-col md:flex-row gap-0 md:gap-4 bg-white/80 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden">
+      <div className="relative z-[1] mt-28 mb-20 md:mt-24 md:mb-4">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="max-h-[calc(100vh-14rem)] md:max-h-[calc(100vh-9rem)] flex flex-col md:flex-row gap-0 md:gap-4 bg-white/80 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden">
             
             {/* Conversations List - Hidden on mobile when chat is open */}
             <div className={`${
               selectedConversation ? "hidden md:flex" : "flex"
-            } w-full md:w-96 flex-col border-r border-[#e0e0e0]`}>
+            } w-full md:w-96 flex-col border-r border-[#e0e0e0] h-full md:max-h-full overflow-hidden`}>
               <div className="p-4 border-b border-[#e0e0e0]">
-                <h2 className="text-xl font-['Manrope:Bold',_sans-serif] text-[#333333]">
-                  Conversations
-                </h2>
+                <div className="flex justify-between items-center mb-3">
+                  <h2 className="text-xl font-['Manrope:Bold',_sans-serif] text-[#333333]">
+                    Conversations
+                  </h2>
+                  <span className="text-sm text-[#999999] font-['Manrope:Regular',_sans-serif]">
+                    {mockConversations.length} total
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <label className="text-sm text-[#666666] font-['Manrope:Medium',_sans-serif]">
+                    Par page:
+                  </label>
+                  <select
+                    value={conversationsPerPage}
+                    onChange={(e) => {
+                      setConversationsPerPage(Number(e.target.value));
+                      setCurrentPageConversations(1);
+                    }}
+                    className="px-2 py-1 border border-[#e0e0e0] rounded-lg text-sm font-['Manrope:Regular',_sans-serif] text-[#333333] focus:outline-none focus:border-[#4a90e2]"
+                  >
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={50}>50</option>
+                  </select>
+                </div>
               </div>
 
-              <div className="flex-1 overflow-y-auto">
-                {mockConversations.map((conversation) => (
+              <div className="flex-1 overflow-y-auto overscroll-contain">
+                {paginatedConversations.map((conversation) => (
                   <button
                     key={conversation.id}
-                    onClick={() => setSelectedConversation(conversation)}
+                    onClick={() => handleConversationSelect(conversation)}
                     className={`w-full p-4 flex items-start gap-3 hover:bg-gray-50 transition-colors border-b border-[#e0e0e0] ${
                       selectedConversation?.id === conversation.id ? "bg-blue-50" : ""
                     }`}
@@ -108,11 +154,36 @@ export default function MessagesPage() {
                   </button>
                 ))}
               </div>
+
+              {/* Pagination des conversations */}
+              {totalPagesConversations > 1 && (
+                <div className="p-2 sm:p-3 border-t border-[#e0e0e0] flex-shrink-0">
+                  <div className="flex items-center justify-between gap-1 sm:gap-2">
+                    <button
+                      onClick={() => setCurrentPageConversations(prev => Math.max(prev - 1, 1))}
+                      disabled={currentPageConversations === 1}
+                      className="px-2 sm:px-3 py-1 sm:py-1.5 border border-[#e0e0e0] rounded-lg text-xs font-['Manrope:Medium',_sans-serif] text-[#666666] hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    >
+                      Préc.
+                    </button>
+                    <span className="text-xs text-[#666666] font-['Manrope:Regular',_sans-serif] whitespace-nowrap">
+                      <span className="font-['Manrope:Bold',_sans-serif] text-[#333333]">{currentPageConversations}</span> / <span className="font-['Manrope:Bold',_sans-serif] text-[#333333]">{totalPagesConversations}</span>
+                    </span>
+                    <button
+                      onClick={() => setCurrentPageConversations(prev => Math.min(prev + 1, totalPagesConversations))}
+                      disabled={currentPageConversations === totalPagesConversations}
+                      className="px-2 sm:px-3 py-1 sm:py-1.5 border border-[#e0e0e0] rounded-lg text-xs font-['Manrope:Medium',_sans-serif] text-[#666666] hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    >
+                      Suiv.
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Chat Area */}
             {selectedConversation ? (
-              <div className="flex-1 flex flex-col">
+              <div className="flex-1 flex flex-col max-h-full overflow-hidden">
                 {/* Chat Header */}
                 <div className="px-4 md:px-6 py-4 border-b border-[#e0e0e0] flex items-center justify-between">
                   <div className="flex items-center gap-3">
@@ -154,6 +225,60 @@ export default function MessagesPage() {
                   </div>
                 </div>
 
+                {/* Pagination et contrôles des messages en haut */}
+                {allMessages.length > 0 && (
+                  <div className="px-4 md:px-6 py-3 border-b border-[#e0e0e0]">
+                    <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3">
+                      {/* Sélecteur et compteur */}
+                      <div className="flex items-center gap-3 flex-wrap">
+                        <div className="flex items-center gap-2">
+                          <label className="text-xs text-[#666666] font-['Manrope:Medium',_sans-serif] whitespace-nowrap">
+                            Par page:
+                          </label>
+                          <select
+                            value={messagesPerPage}
+                            onChange={(e) => {
+                              setMessagesPerPage(Number(e.target.value));
+                              setCurrentPageMessages(1);
+                            }}
+                            className="px-2 py-1 border border-[#e0e0e0] rounded-lg text-xs font-['Manrope:Regular',_sans-serif] text-[#333333] focus:outline-none focus:border-[#4a90e2]"
+                          >
+                            <option value={10}>10</option>
+                            <option value={20}>20</option>
+                            <option value={50}>50</option>
+                          </select>
+                        </div>
+                        <span className="text-xs text-[#999999] font-['Manrope:Regular',_sans-serif]">
+                          {allMessages.length} message{allMessages.length > 1 ? 's' : ''}
+                        </span>
+                      </div>
+
+                      {/* Pagination en haut */}
+                      {totalPagesMessages > 1 && (
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => setCurrentPageMessages(prev => Math.max(prev - 1, 1))}
+                            disabled={currentPageMessages === 1}
+                            className="px-3 py-1.5 border border-[#e0e0e0] rounded-lg text-xs font-['Manrope:Medium',_sans-serif] text-[#666666] hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                          >
+                            Précédent
+                          </button>
+                          <span className="text-xs text-[#666666] font-['Manrope:Regular',_sans-serif] whitespace-nowrap">
+                            <span className="font-['Manrope:Bold',_sans-serif] text-[#333333]">{currentPageMessages}</span> / <span className="font-['Manrope:Bold',_sans-serif] text-[#333333]">{totalPagesMessages}</span>
+                          </span>
+                          <button
+                            onClick={() => setCurrentPageMessages(prev => Math.min(prev + 1, totalPagesMessages))}
+                            disabled={currentPageMessages === totalPagesMessages}
+                            className="px-3 py-1.5 border border-[#e0e0e0] rounded-lg text-xs font-['Manrope:Medium',_sans-serif] text-[#666666] hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                          >
+                            Suivant
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 {/* Messages */}
                 <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4">
                   {currentMessages.map((message) => {
@@ -194,6 +319,31 @@ export default function MessagesPage() {
                     );
                   })}
                 </div>
+
+                {/* Pagination des messages en bas */}
+                {totalPagesMessages > 1 && (
+                  <div className="px-4 md:px-6 py-3 border-t border-[#e0e0e0]">
+                    <div className="flex items-center justify-center gap-3">
+                      <button
+                        onClick={() => setCurrentPageMessages(prev => Math.max(prev - 1, 1))}
+                        disabled={currentPageMessages === 1}
+                        className="px-3 py-1.5 border border-[#e0e0e0] rounded-lg text-sm font-['Manrope:Medium',_sans-serif] text-[#666666] hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      >
+                        Précédent
+                      </button>
+                      <span className="text-sm text-[#666666] font-['Manrope:Regular',_sans-serif]">
+                        Page <span className="font-['Manrope:Bold',_sans-serif] text-[#333333]">{currentPageMessages}</span> / <span className="font-['Manrope:Bold',_sans-serif] text-[#333333]">{totalPagesMessages}</span>
+                      </span>
+                      <button
+                        onClick={() => setCurrentPageMessages(prev => Math.min(prev + 1, totalPagesMessages))}
+                        disabled={currentPageMessages === totalPagesMessages}
+                        className="px-3 py-1.5 border border-[#e0e0e0] rounded-lg text-sm font-['Manrope:Medium',_sans-serif] text-[#666666] hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      >
+                        Suivant
+                      </button>
+                    </div>
+                  </div>
+                )}
 
                 {/* Message Input */}
                 <div className="px-4 md:px-6 py-4 border-t border-[#e0e0e0]">
