@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import 'leaflet/dist/leaflet.css';
 import BottomBarMobileUrbanConnect from "../components/BottomBar/MobileUrbanConnect";
-import TopBarTranspartUrbanConnect from "../components/Topbar/TranspartUrbanConnect";
+import TopBarTranspartSearchUrbanConnect from "../components/Topbar/TranspartSearchUrbanConnect";
 
 const DynamicMap = dynamic(() => import("../components/DynamicMap"), { ssr: false });
 
@@ -55,7 +55,7 @@ export default function MapPage() {
       <DynamicMap />
 
       {/* === Navigation du haut === */}
-      <TopBarTranspartUrbanConnect />
+      <TopBarTranspartSearchUrbanConnect />
 
       {/* === ✅ Bottom Navigation === */}
       <div className="fixed bottom-0 left-0 w-full z-50">

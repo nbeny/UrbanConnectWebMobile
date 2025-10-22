@@ -13,7 +13,7 @@ export default function BottomBarMobileUrbanConnect() {
     { icon: Earth, label: "Discover", href: "/map" },
     { icon: Building2, label: "Home", href: "/welcome" },
     { icon: ChartLine, label: "Stats", href: "/stats" },
-    { icon: Settings, label: "Settings", href: "/Settings" },
+    { icon: Settings, label: "Settings", href: "/profile/settings" },
   ];
 
   return (

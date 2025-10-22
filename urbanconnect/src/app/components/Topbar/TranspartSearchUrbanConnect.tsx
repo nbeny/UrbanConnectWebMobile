@@ -4,7 +4,7 @@ import { Bell, CircleUser, Building2, Search, LogOut, User, X } from "lucide-rea
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 
-export default function TopBarTranspartUrbanConnect() {
+export default function TopBarTranspartSearchUrbanConnect() {
     const [showUserMenu, setShowUserMenu] = useState(false);
     const [showNotifications, setShowNotifications] = useState(false);
     
@@ -43,6 +43,18 @@ export default function TopBarTranspartUrbanConnect() {
                     <div className="flex items-center space-x-3">
                         <Building2 className="h-8 w-8 text-primary-400" />
                         <span className="text-2xl font-bold font-futura">Urban Connect</span>
+                    </div>
+
+                    {/* Barre de recherche */}
+                    <div className="flex-1 max-w-2xl mx-6">
+                        <div className="flex items-center border rounded-full px-5 py-3 shadow-sm bg-white">
+                            <Search className="h-5 w-5 mr-2 text-gray-400" />
+                            <input
+                                type="text"
+                                placeholder="Search articles, posts, businesses..."
+                                className="flex-1 outline-none text-sm md:text-base"
+                            />
+                        </div>
                     </div>
 
                     {/* Boutons */}
@@ -184,6 +196,18 @@ export default function TopBarTranspartUrbanConnect() {
                                     </div>
                                 )}
                             </div>
+                        </div>
+                    </div>
+
+                    {/* Ligne du bas : barre de recherche */}
+                    <div className="w-full">
+                        <div className="flex items-center border rounded-full px-4 py-2 shadow-sm bg-white">
+                            <Search className="h-4 w-4 mr-2 text-gray-400" />
+                            <input
+                                type="text"
+                                placeholder="Search..."
+                                className="flex-1 outline-none text-sm"
+                            />
                         </div>
                     </div>
                 </div>

@@ -7,7 +7,7 @@ import { NextPage } from "next";
 import { FaUserFriends, FaComment, FaShare, FaThumbsUp, FaPlus, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { Package, Wrench, Calendar, Phone, Mail, MapPin, Star, Users, Clock, Building2, Award, Trophy, Medal, Target, Shield, Zap, Map, AlertTriangle } from "lucide-react";
 import urbanBackground from "@/assets/urbanconnectBackground.png";
-import TopBarTranspartUrbanConnect from "@/app/components/Topbar/TranspartUrbanConnect";
+import TopBarTranspartUrbanConnect from "@/app/components/Topbar/TranspartSearchUrbanConnect";
 import BottomBarMobileUrbanConnect from "@/app/components/BottomBar/MobileUrbanConnect";
 
 // Styles pour masquer la scrollbar
