@@ -915,32 +915,32 @@ const RequestsPanel = ({ itemsPerPage, currentPage, setCurrentPage, totalPages, 
 
       {/* Requests Table */}
       <div className="overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
+        <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
+          <table className="min-w-[1200px] sm:min-w-full divide-y divide-gray-200">
             <thead className=" sticky top-0">
               <tr>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-1 sm:px-2 py-2 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-tight">
                   Type
                 </th>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-1 sm:px-2 py-2 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-tight">
                   Titre
                 </th>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-1 sm:px-2 py-2 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-tight">
                   Catégorie
                 </th>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-1 sm:px-2 py-2 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-tight">
                   Budget
                 </th>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-1 sm:px-2 py-2 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-tight">
                   Localisation
                 </th>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-1 sm:px-2 py-2 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-tight">
                   Utilisateur
                 </th>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-1 sm:px-2 py-2 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-tight">
                   Réponses
                 </th>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-1 sm:px-2 py-2 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-tight">
                   Priorité
                 </th>
               </tr>
@@ -948,39 +948,41 @@ const RequestsPanel = ({ itemsPerPage, currentPage, setCurrentPage, totalPages, 
             <tbody className="divide-y divide-gray-200">
               {paginatedRequests.map((request) => (
                 <tr key={request.id} className="hover:">
-                  <td className="px-3 py-2 whitespace-nowrap">
-                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
-                      <Wrench className="w-3 h-3" />
-                      Demande
+                  <td className="px-1 sm:px-2 py-2 whitespace-nowrap">
+                    <span className="inline-flex items-center gap-0.5 sm:gap-1 px-1 sm:px-2 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-xs font-medium bg-purple-100 text-purple-700">
+                      <Wrench className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+                      <span className="hidden sm:inline">Demande</span>
                     </span>
                   </td>
-                  <td className="px-3 py-2">
-                    <div className="font-semibold text-sm text-gray-900">{request.title}</div>
-                    <div className="text-xs text-gray-500">{request.description}</div>
+                  <td className="px-1 sm:px-2 py-2">
+                    <div className="font-semibold text-[10px] sm:text-sm text-gray-900 line-clamp-2">{request.title}</div>
+                    <div className="text-[9px] sm:text-xs text-gray-500 line-clamp-1">{request.description}</div>
                   </td>
-                  <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-600">
+                  <td className="px-1 sm:px-2 py-2 whitespace-nowrap text-[10px] sm:text-sm text-gray-600">
                     {request.category}
                   </td>
-                  <td className="px-3 py-2 whitespace-nowrap">
-                    <span className="font-semibold text-green-600">{request.budget}€</span>
+                  <td className="px-1 sm:px-2 py-2 whitespace-nowrap">
+                    <span className="font-semibold text-[10px] sm:text-sm text-green-600">{request.budget}€</span>
                   </td>
-                  <td className="px-3 py-2 whitespace-nowrap">
-                    <div className="flex items-center gap-1 text-sm text-gray-600">
+                  <td className="px-1 sm:px-2 py-2 whitespace-nowrap">
+                    <div className="flex items-center gap-1 text-xs sm:text-sm text-gray-600">
                       <MapPin className="w-3 h-3 text-gray-400" />
                       {request.location}
                     </div>
                   </td>
-                  <td className="px-3 py-2 whitespace-nowrap">
+                  <td className="px-1 sm:px-2 py-2 whitespace-nowrap">
                     <UserCellRenderer value={request.user} />
                   </td>
-                  <td className="px-3 py-2 whitespace-nowrap">
+                  <td className="px-1 sm:px-2 py-2 whitespace-nowrap">
                     <div className="flex items-center gap-1 text-xs text-gray-500">
                       <User className="w-3 h-3" />
                       {request.responses}
                     </div>
                   </td>
-                  <td className="px-3 py-2 whitespace-nowrap">
-                    <PriorityCellRenderer value={request.priority} />
+                  <td className="px-1 sm:px-2 py-2 whitespace-nowrap">
+                    <div className="scale-75 sm:scale-100 origin-left">
+                      <PriorityCellRenderer value={request.priority} />
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -1027,6 +1029,7 @@ export default function InventoryListing() {
   const [currentPageInventory, setCurrentPageInventory] = useState(1);
   const [currentPageRequests, setCurrentPageRequests] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(25);
+  const [mobileView, setMobileView] = useState<'inventory' | 'requests'>('inventory');
 
   const [filters, setFilters] = useState({
     type: [],
@@ -1238,244 +1241,278 @@ export default function InventoryListing() {
               <p className="text-sm sm:text-base text-gray-600">Gérez vos produits, services, utilisateurs et offres d'emploi</p>
             </div>
 
+            {/* Mobile Navigator - Only visible on mobile/tablet (< xl) */}
+            <div className="xl:hidden mb-4 border border-indigo-200 rounded-lg p-2 shadow-sm sticky top-20 z-10 bg-white">
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setMobileView('inventory')}
+                  className={`flex-1 px-4 py-3 rounded-lg font-medium text-sm transition-all ${mobileView === 'inventory'
+                    ? 'bg-indigo-600 text-white shadow-md'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                >
+                  <div className="flex items-center justify-center gap-2">
+                    <Package className="w-4 h-4" />
+                    <span>Inventaire</span>
+                  </div>
+                </button>
+                <button
+                  onClick={() => setMobileView('requests')}
+                  className={`flex-1 px-4 py-3 rounded-lg font-medium text-sm transition-all ${mobileView === 'requests'
+                    ? 'bg-indigo-600 text-white shadow-md'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                >
+                  <div className="flex items-center justify-center gap-2">
+                    <Wrench className="w-4 h-4" />
+                    <span>Demandes</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+
+            {/* Search and Filters Bar */}
+            <div className="mb-4 sm:mb-6 space-y-4">
+              {/* Search Bar */}
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                <div className="flex-1 relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
+                  <input
+                    type="text"
+                    placeholder="Rechercher..."
+                    value={searchText}
+                    onChange={(e) => {
+                      setSearchText(e.target.value);
+                      setCurrentPageInventory(1);
+                    }}
+                    className="w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  />
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setShowFilters(!showFilters)}
+                    className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 rounded-lg border font-medium transition-colors text-sm sm:text-base ${showFilters
+                      ? 'bg-indigo-600 text-white border-indigo-600'
+                      : 'text-gray-700 border-gray-300 hover:'
+                      }`}
+                  >
+                    <Filter className="w-4 h-4" />
+                    <span className="hidden sm:inline">Filtres rapides</span>
+                    <span className="sm:hidden">Filtres</span>
+                    {getActiveFiltersCount() > 0 && (
+                      <span className={`${showFilters ? 'text-indigo-600' : 'bg-indigo-600 text-white'} rounded-full px-2 py-1 text-xs font-bold`}>
+                        {getActiveFiltersCount()}
+                      </span>
+                    )}
+                  </button>
+                  <button
+                    onClick={() => setShowFilterDrawer(true)}
+                    className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 text-gray-700 hover: font-medium transition-colors text-sm sm:text-base"
+                  >
+                    <Filter className="w-4 h-4" />
+                    <span className="hidden sm:inline">Tous les filtres</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Advanced Filters */}
+              {showFilters && (
+                <div className="filters-container rounded-lg p-3 sm:p-4 border border-gray-200 shadow-sm">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 sm:gap-4">
+
+                    {/* Type Filter */}
+                    <div>
+                      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Type</label>
+                      <div className="space-y-1 sm:space-y-2">
+                        {['Locations', 'Ventes', 'Services', 'Demandes'].map(type => (
+                          <label key={type} className="flex items-center">
+                            <input
+                              type="checkbox"
+                              checked={filters.type.includes(type)}
+                              onChange={(e) => {
+                                const newTypes = e.target.checked
+                                  ? [...filters.type, type]
+                                  : filters.type.filter(t => t !== type);
+                                handleFilterChange('type', newTypes);
+                              }}
+                              className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                            />
+                            <span className="ml-2 text-xs sm:text-sm text-gray-600">{type}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+
+
+                    {/* Category Filter */}
+                    <div>
+                      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Catégorie</label>
+                      <div className="max-h-40 sm:max-h-56 overflow-y-auto space-y-1 sm:space-y-2">
+                        {Object.keys(urbanConnectCategories).map(mainType => (
+                          Object.keys(urbanConnectCategories[mainType]).map(category => (
+                            <label key={category} className="flex items-center">
+                              <input
+                                type="checkbox"
+                                checked={filters.category.includes(category)}
+                                onChange={(e) => {
+                                  const newCategories = e.target.checked
+                                    ? [...filters.category, category]
+                                    : filters.category.filter(c => c !== category);
+                                  handleFilterChange('category', newCategories);
+                                }}
+                                className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                              />
+                              <span className="ml-2 text-xs sm:text-sm text-gray-600">{category}</span>
+                            </label>
+                          ))
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Subcategory Filter */}
+                    <div>
+                      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Sous-catégorie</label>
+                      <div className="max-h-40 sm:max-h-56 overflow-y-auto space-y-1 sm:space-y-2">
+                        {Object.keys(urbanConnectCategories).map(mainType => (
+                          Object.keys(urbanConnectCategories[mainType]).map(category => (
+                            urbanConnectCategories[mainType][category].map(subcategory => (
+                              <label key={subcategory} className="flex items-center">
+                                <input
+                                  type="checkbox"
+                                  checked={filters.subcategory.includes(subcategory)}
+                                  onChange={(e) => {
+                                    const newSubcategories = e.target.checked
+                                      ? [...filters.subcategory, subcategory]
+                                      : filters.subcategory.filter(c => c !== subcategory);
+                                    handleFilterChange('subcategory', newSubcategories);
+                                  }}
+                                  className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                />
+                                <span className="ml-2 text-xs text-gray-500">{subcategory}</span>
+                              </label>
+                            ))
+                          ))
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Location Filter */}
+                    <div>
+                      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Localisation</label>
+                      <input
+                        type="text"
+                        placeholder="Paris, Lyon..."
+                        value={filters.location}
+                        onChange={(e) => handleFilterChange('location', e.target.value)}
+                        className="w-full px-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      />
+                    </div>
+
+                    {/* Featured Filter */}
+                    <div>
+                      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Options</label>
+                      <label className="flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={filters.featured === true}
+                          onChange={(e) => handleFilterChange('featured', e.target.checked ? true : undefined)}
+                          className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                        />
+                        <span className="ml-2 text-xs sm:text-sm text-gray-600">Mis en avant uniquement</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end mt-3 sm:mt-4">
+                    <button
+                      onClick={clearFilters}
+                      className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-gray-600 border border-gray-300 rounded-lg hover: transition-colors"
+                    >
+                      Effacer tous les filtres
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Results Summary & Items Per Page - Appliqué aux 2 tableaux */}
+            <div className="mb-3 sm:mb-4 bg-indigo-50 border border-indigo-200 rounded-lg p-3">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                <div className="text-xs sm:text-sm text-gray-700">
+                  <div className="font-semibold text-indigo-700 mb-1">Configuration de pagination globale</div>
+                  <div className="flex gap-4">
+                    <span><span className="font-medium">Inventaire:</span> {filteredData.length.toLocaleString()} résultat{filteredData.length > 1 ? 's' : ''}</span>
+                    <span><span className="font-medium">Demandes:</span> {mockRequestsData.length} résultat{mockRequestsData.length > 1 ? 's' : ''}</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 px-3 py-2 rounded-lg border border-indigo-300">
+                  <label className="text-xs sm:text-sm text-gray-700 font-medium">Éléments par page (2 tableaux):</label>
+                  <select
+                    value={itemsPerPage}
+                    onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
+                    className="px-2 sm:px-3 py-1 sm:py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-xs sm:text-sm font-semibold bg-white"
+                  >
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={25}>25</option>
+                    <option value={50}>50</option>
+                    <option value={75}>75</option>
+                    <option value={100}>100</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
             {/* Main Layout: Responsive - Mobile/Tablet: stack vertical (inventory first), Desktop: side by side */}
             <div className="flex flex-col xl:flex-row gap-4 sm:gap-6 pr-2">
               {/* Inventory Panel - First on mobile/tablet, right on desktop (2/3) */}
-              <div className="w-full xl:w-2/3 order-1 xl:order-2 pr-2">
+              <div className={`w-full xl:w-2/3 order-1 xl:order-2 pr-2 ${mobileView === 'inventory' ? 'block' : 'hidden xl:block'
+                }`}>
                 <div className="space-y-6">
 
-                  {/* Search and Filters Bar */}
-                  <div className="mb-4 sm:mb-6 space-y-4">
-                    {/* Search Bar */}
-                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
-                      <div className="flex-1 relative">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
-                        <input
-                          type="text"
-                          placeholder="Rechercher..."
-                          value={searchText}
-                          onChange={(e) => {
-                            setSearchText(e.target.value);
-                            setCurrentPageInventory(1);
-                          }}
-                          className="w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                        />
-                      </div>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => setShowFilters(!showFilters)}
-                          className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 rounded-lg border font-medium transition-colors text-sm sm:text-base ${showFilters
-                              ? 'bg-indigo-600 text-white border-indigo-600'
-                              : 'text-gray-700 border-gray-300 hover:'
-                            }`}
-                        >
-                          <Filter className="w-4 h-4" />
-                          <span className="hidden sm:inline">Filtres rapides</span>
-                          <span className="sm:hidden">Filtres</span>
-                          {getActiveFiltersCount() > 0 && (
-                            <span className={`${showFilters ? 'text-indigo-600' : 'bg-indigo-600 text-white'} rounded-full px-2 py-1 text-xs font-bold`}>
-                              {getActiveFiltersCount()}
-                            </span>
-                          )}
-                        </button>
-                        <button
-                          onClick={() => setShowFilterDrawer(true)}
-                          className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 text-gray-700 hover: font-medium transition-colors text-sm sm:text-base"
-                        >
-                          <Filter className="w-4 h-4" />
-                          <span className="hidden sm:inline">Tous les filtres</span>
-                        </button>
-                      </div>
-                    </div>
 
-                    {/* Advanced Filters */}
-                    {showFilters && (
-                      <div className="filters-container rounded-lg p-3 sm:p-4 border border-gray-200 shadow-sm">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 sm:gap-4">
-
-                          {/* Type Filter */}
-                          <div>
-                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Type</label>
-                            <div className="space-y-1 sm:space-y-2">
-                              {['Locations', 'Ventes', 'Services', 'Demandes'].map(type => (
-                                <label key={type} className="flex items-center">
-                                  <input
-                                    type="checkbox"
-                                    checked={filters.type.includes(type)}
-                                    onChange={(e) => {
-                                      const newTypes = e.target.checked
-                                        ? [...filters.type, type]
-                                        : filters.type.filter(t => t !== type);
-                                      handleFilterChange('type', newTypes);
-                                    }}
-                                    className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                  />
-                                  <span className="ml-2 text-xs sm:text-sm text-gray-600">{type}</span>
-                                </label>
-                              ))}
-                            </div>
-                          </div>
-
-
-                          {/* Category Filter */}
-                          <div>
-                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Catégorie</label>
-                            <div className="max-h-40 sm:max-h-56 overflow-y-auto space-y-1 sm:space-y-2">
-                              {Object.keys(urbanConnectCategories).map(mainType => (
-                                Object.keys(urbanConnectCategories[mainType]).map(category => (
-                                  <label key={category} className="flex items-center">
-                                    <input
-                                      type="checkbox"
-                                      checked={filters.category.includes(category)}
-                                      onChange={(e) => {
-                                        const newCategories = e.target.checked
-                                          ? [...filters.category, category]
-                                          : filters.category.filter(c => c !== category);
-                                        handleFilterChange('category', newCategories);
-                                      }}
-                                      className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                    />
-                                    <span className="ml-2 text-xs sm:text-sm text-gray-600">{category}</span>
-                                  </label>
-                                ))
-                              ))}
-                            </div>
-                          </div>
-
-                          {/* Subcategory Filter */}
-                          <div>
-                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Sous-catégorie</label>
-                            <div className="max-h-40 sm:max-h-56 overflow-y-auto space-y-1 sm:space-y-2">
-                              {Object.keys(urbanConnectCategories).map(mainType => (
-                                Object.keys(urbanConnectCategories[mainType]).map(category => (
-                                  urbanConnectCategories[mainType][category].map(subcategory => (
-                                    <label key={subcategory} className="flex items-center">
-                                      <input
-                                        type="checkbox"
-                                        checked={filters.subcategory.includes(subcategory)}
-                                        onChange={(e) => {
-                                          const newSubcategories = e.target.checked
-                                            ? [...filters.subcategory, subcategory]
-                                            : filters.subcategory.filter(c => c !== subcategory);
-                                          handleFilterChange('subcategory', newSubcategories);
-                                        }}
-                                        className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                      />
-                                      <span className="ml-2 text-xs text-gray-500">{subcategory}</span>
-                                    </label>
-                                  ))
-                                ))
-                              ))}
-                            </div>
-                          </div>
-
-                          {/* Location Filter */}
-                          <div>
-                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Localisation</label>
-                            <input
-                              type="text"
-                              placeholder="Paris, Lyon..."
-                              value={filters.location}
-                              onChange={(e) => handleFilterChange('location', e.target.value)}
-                              className="w-full px-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                            />
-                          </div>
-
-                          {/* Featured Filter */}
-                          <div>
-                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Options</label>
-                            <label className="flex items-center">
-                              <input
-                                type="checkbox"
-                                checked={filters.featured === true}
-                                onChange={(e) => handleFilterChange('featured', e.target.checked ? true : undefined)}
-                                className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                              />
-                              <span className="ml-2 text-xs sm:text-sm text-gray-600">Mis en avant uniquement</span>
-                            </label>
-                          </div>
-                        </div>
-
-                        <div className="flex justify-end mt-3 sm:mt-4">
-                          <button
-                            onClick={clearFilters}
-                            className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-gray-600 border border-gray-300 rounded-lg hover: transition-colors"
-                          >
-                            Effacer tous les filtres
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Results Summary & Items Per Page - Appliqué aux 2 tableaux */}
-                  <div className="mb-3 sm:mb-4 bg-indigo-50 border border-indigo-200 rounded-lg p-3">
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                      <div className="text-xs sm:text-sm text-gray-700">
-                        <div className="font-semibold text-indigo-700 mb-1">Configuration de pagination globale</div>
-                        <div className="flex gap-4">
-                          <span><span className="font-medium">Inventaire:</span> {filteredData.length.toLocaleString()} résultat{filteredData.length > 1 ? 's' : ''}</span>
-                          <span><span className="font-medium">Demandes:</span> {mockRequestsData.length} résultat{mockRequestsData.length > 1 ? 's' : ''}</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 px-3 py-2 rounded-lg border border-indigo-300">
-                        <label className="text-xs sm:text-sm text-gray-700 font-medium">Éléments par page (2 tableaux):</label>
-                        <select
-                          value={itemsPerPage}
-                          onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
-                          className="px-2 sm:px-3 py-1 sm:py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-xs sm:text-sm font-semibold bg-white"
-                        >
-                          <option value={5}>5</option>
-                          <option value={10}>10</option>
-                          <option value={25}>25</option>
-                          <option value={50}>50</option>
-                          <option value={75}>75</option>
-                          <option value={100}>100</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
 
                   {/* Custom Table */}
                   <div className="rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-                    <div className="overflow-x-auto -mx-4 sm:mx-0">
+                    <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
                       <table className="min-w-[1200px] sm:min-w-full divide-y divide-gray-200">
                         <thead className="">
                           <tr>
                             <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider w-20 sm:w-32">
                               Images
                             </th>
-                            <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider w-20 sm:w-32">
                               Type
                             </th>
-                            <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider w-20 sm:w-32">
                               Titre
                             </th>
-                            <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                            <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider">
                               Catégorie
                             </th>
-                            <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">
+                            <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider">
                               Sous-catégorie
                             </th>
-                            <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden xl:table-cell">
+                            <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider">
                               Priorité
                             </th>
                             <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider">
                               Prix
                             </th>
-                            <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">
+                            <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider">
                               Localisation
                             </th>
-                            <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">
+                            <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider">
                               Utilisateur
                             </th>
-                            <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden xl:table-cell">
+                            <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider">
                               Stats
                             </th>
-                            <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                            <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider">
                               Statut
                             </th>
-                            <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">
+                            <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wider">
                               Créé le
                             </th>
                           </tr>
@@ -1496,13 +1533,13 @@ export default function InventoryListing() {
                               <td className="px-1 sm:px-2 py-2 sm:py-4">
                                 <div className="font-semibold text-xs sm:text-sm text-gray-900 line-clamp-2">{item.title}</div>
                               </td>
-                              <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-600 hidden md:table-cell">
+                              <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-600">
                                 {item.category}
                               </td>
-                              <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500 hidden lg:table-cell">
+                              <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500">
                                 {item.subcategory}
                               </td>
-                              <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap hidden xl:table-cell">
+                              <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap">
                                 <PriorityCellRenderer value={item.priority} />
                               </td>
                               <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap">
@@ -1510,22 +1547,22 @@ export default function InventoryListing() {
                                   <PriceCellRenderer value={item.price} data={item} />
                                 </div>
                               </td>
-                              <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap hidden sm:table-cell">
+                              <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap">
                                 <div className="flex items-center gap-1 text-xs sm:text-sm text-gray-600">
                                   <MapPin className="w-3 h-3 text-gray-400" />
-                                  <span className="hidden md:inline">{item.location}</span>
+                                  {item.location}
                                 </div>
                               </td>
-                              <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap hidden lg:table-cell">
+                              <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap">
                                 <UserCellRenderer value={item.user} />
                               </td>
-                              <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap hidden xl:table-cell">
+                              <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap">
                                 <StatsCellRenderer data={item} />
                               </td>
-                              <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap hidden md:table-cell">
+                              <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap">
                                 <StatusCellRenderer value={item.status} data={item} />
                               </td>
-                              <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap hidden lg:table-cell">
+                              <td className="px-1 sm:px-2 py-2 sm:py-4 whitespace-nowrap">
                                 <div className="flex items-center gap-1 text-xs sm:text-sm text-gray-600">
                                   <Calendar className="w-3 h-3 text-gray-400" />
                                   {new Date(item.createdAt).toLocaleDateString('fr-FR')}
@@ -1579,7 +1616,8 @@ export default function InventoryListing() {
               </div>
 
               {/* Requests Panel - Second on mobile/tablet, left on desktop (1/3) */}
-              <div className="w-full xl:w-1/3 order-2 xl:order-1">
+              <div className={`w-full xl:w-1/3 order-2 xl:order-1 ${mobileView === 'requests' ? 'block' : 'hidden xl:block'
+                }`}>
                 <RequestsPanel
                   itemsPerPage={itemsPerPage}
                   currentPage={currentPageRequests}

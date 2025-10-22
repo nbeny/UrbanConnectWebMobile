@@ -135,16 +135,15 @@ export default function FilterDrawer({
       <div
         className="fixed inset-0 bg-black/20 z-40 transition-opacity duration-300"
         onClick={onClose}
-        style={{ bottom: 0, top: 0 }}
       />
 
       {/* Drawer */}
-      <div className="fixed right-0 top-0 h-full w-96 bg-white shadow-xl z-[60] transform transition-transform duration-300 ease-in-out">
+      <div className="fixed right-0 top-18 bottom-15 sm:top-20 sm:bottom-15 w-full sm:w-96  shadow-xl z-[60] transform transition-transform duration-300 ease-in-out flex flex-col border border-white/20 bg-white/10 backdrop-blur-lg shadow-lg text-black">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+        <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 flex-shrink-0">
           <div className="flex items-center gap-2">
             <Filter className="w-5 h-5 text-gray-600" />
-            <h2 className="text-lg font-semibold text-gray-900">Tous les filtres</h2>
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900">Tous les filtres</h2>
           </div>
           <button
             onClick={onClose}
@@ -432,21 +431,23 @@ export default function FilterDrawer({
         </div>
 
         {/* Footer */}
-        <div className="border-t border-gray-200 px-6 py-4">
-          <div className="flex gap-3">
+        <div className="border-t border-gray-200 px-4 sm:px-6 py-3 sm:py-4 flex-shrink-0">
+          <div className="flex gap-2 sm:gap-3">
             <button
               onClick={onClearFilters}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+              className="flex-1 flex items-center justify-center gap-2 px-3 sm:px-4 py-2 border border-gray-300 rounded-lg text-sm sm:text-base text-gray-700 hover:bg-gray-50 transition-colors"
             >
               <RotateCcw className="w-4 h-4" />
-              Tout Effacer
+              <span className="hidden sm:inline">Tout Effacer</span>
+              <span className="sm:hidden">Effacer</span>
             </button>
             <button
               onClick={onClose}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="flex-1 flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base"
             >
               <SearchIcon className="w-4 h-4" />
-              Rechercher ({totalResults.toLocaleString()})
+              <span className="hidden sm:inline">Rechercher ({totalResults.toLocaleString()})</span>
+              <span className="sm:hidden">OK ({totalResults})</span>
             </button>
           </div>
         </div>
